@@ -50,7 +50,7 @@ private:
 	ReiseDlgHelper_t *ResizeHelper;
 	// ’Ç‰Á (2024/3/9)
 	HINSTANCE hInstList;
-	BOOL minimized = FALSE;;
+	BOOL minimized = FALSE;
 
 	void Relocation(BOOL is_init, int WW);
 	void InitList(HWND HList);

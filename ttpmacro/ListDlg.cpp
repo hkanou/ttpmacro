@@ -122,8 +122,7 @@ BOOL CListDlg::OnInitDialog()
 	SetWindowTextW(m_Caption);
 
 	CalcTextExtentW(GetDlgItem(IDC_LISTTEXT), NULL, m_Text,&s);
-	// 等幅フォント用にTWを修正 (2024/3/9)
-	TW = s.cx/2 + s.cx/10;
+	TW = s.cx + s.cx/10;
 	TH = s.cy;
 
 	::GetWindowRect(HList,&R);

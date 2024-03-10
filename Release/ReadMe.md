@@ -3,4 +3,4 @@
   - [ttpmacro_mod.exe](https://github.com/hkanou/ttpmacro/raw/main/Release/ttpmacro_mod.exe)  
     Version   : 2024/03/09  
     Algorithm : MD5  
-    Hash      : 3F031D30222371646B9B9DC5ADC3860F
+    Hash      : EB52617C8CBD9859F72768D18DF3691B

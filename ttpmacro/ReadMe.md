@@ -3,7 +3,7 @@
 ## % diff -up _org_ListDlg.cpp ListDlg.cpp
 ```diff
 --- _org_ListDlg.cpp	2024-02-29 02:02:00.000000000 +0900
-+++ ListDlg.cpp	2024-03-09 22:42:21.271058100 +0900
++++ ListDlg.cpp	2024-03-10 10:22:29.875256600 +0900
 @@ -55,6 +55,8 @@ CListDlg::CListDlg(const wchar_t *Text,
  
  INT_PTR CListDlg::DoModal(HINSTANCE hInst, HWND hWndParent)
@@ -13,7 +13,7 @@
  	return TTCDialog::DoModal(hInst, hWndParent, IDD);
  }
  
-@@ -112,12 +114,16 @@ BOOL CListDlg::OnInitDialog()
+@@ -112,6 +114,9 @@ BOOL CListDlg::OnInitDialog()
  	HList = ::GetDlgItem(m_hWnd, IDC_LISTBOX);
  	InitList(HList);
  
@@ -23,15 +23,7 @@
  	// 本文とタイトル
  	SetDlgItemTextW(IDC_LISTTEXT, m_Text);
  	SetWindowTextW(m_Caption);
- 
- 	CalcTextExtentW(GetDlgItem(IDC_LISTTEXT), NULL, m_Text,&s);
--	TW = s.cx + s.cx/10;
-+	// 等幅フォント用にTWを修正 (2024/3/9)
-+	TW = s.cx/2 + s.cx/10;
- 	TH = s.cy;
- 
- 	::GetWindowRect(HList,&R);
-@@ -214,6 +220,18 @@ LRESULT CListDlg::DlgProc(UINT msg, WPAR
+@@ -214,6 +219,18 @@ LRESULT CListDlg::DlgProc(UINT msg, WPAR
  {
  	switch (msg) {
  		case WM_SIZE:
@@ -50,7 +42,7 @@
  			ReiseDlgHelper_WM_SIZE(ResizeHelper);
  			break;
  		case WM_GETMINMAXINFO:
-@@ -223,6 +241,13 @@ LRESULT CListDlg::DlgProc(UINT msg, WPAR
+@@ -223,6 +240,13 @@ LRESULT CListDlg::DlgProc(UINT msg, WPAR
  			ReiseDlgHelperDelete(ResizeHelper);
  			ResizeHelper = NULL;
  			break;

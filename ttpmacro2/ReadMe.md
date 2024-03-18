@@ -5,6 +5,7 @@
   修正前 listbox <message> <title> <string array> [<selected>]
   修正後 listbox <message> <title> <string array> [<selected> ['doubleclick'] ['minmaxbutton'] ['size=large']]
   例) listbox '今日の天気はどうですか?' 'あなたへの問い' msg 6 'doubleclick' 'minmaxbutton' 'size=large'
+  ※ size=medium、size=hugeは、要望があれば追加
 ```
 - アイコン画像の差し替え  
 - 最小化/最大化ボタンの追加  

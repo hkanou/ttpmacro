@@ -6,7 +6,9 @@
 - 最大化状態での表示オプションの追加  
 - ダイアログのサイズを拡大オプションの追加
 <hr>
+
 # listbox使用方法
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -14,7 +16,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
   <title>listbox</title>
   <meta http-equiv="Content-Style-Type" content="text/css">
-  <link rel="stylesheet" href="style.css" type="text/css">
+  <link rel="doc/stylesheet" href="style.css" type="text/css">
 </head>
 
 <body>
@@ -151,7 +153,9 @@ messagebox var "result"
 </html>
 
 <hr>
+
 # パッチ
+
 ## % diff -rup ttpmacro_org/inpdlg.cpp ttpmacro/inpdlg.cpp
 ```diff
 --- ttpmacro_org/inpdlg.cpp	2024-02-28 09:02:00.000000000 +0900

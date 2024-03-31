@@ -221,7 +221,7 @@ WORD TTLGetPassword()
 		size_t Temp2_len = sizeof(Temp2);
 		Err = OpenInpDlg(input_string, wc::fromUtf8(Str2), L"Enter password", L"", TRUE);
 		if (Err == IDCLOSE) {
-			// リストボックスの閉じるボタン(&確認ダイアログ)で、マクロの終了とする。
+			// 閉じるボタン(&確認ダイアログ)で、マクロの終了とする。
 			TTLStatus = IdTTLEnd;
 			return 0;
 		} else {
@@ -295,7 +295,7 @@ WORD TTLInputBox(BOOL Paswd)
 		wchar_t input_string[MaxStrLen];
 		Err = OpenInpDlg(input_string,wc::fromUtf8(Str1),wc::fromUtf8(Str2),wc::fromUtf8(Str3),Paswd);
 		if (Err == IDCLOSE) {
-			// リストボックスの閉じるボタン(&確認ダイアログ)で、マクロの終了とする。
+			// 閉じるボタン(&確認ダイアログ)で、マクロの終了とする。
 		  	TTLStatus = IdTTLEnd;
 			SetStrVal(VarId, "");
 		} else {

@@ -378,7 +378,7 @@ http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpma
 -				result = 1;  /* success */
 +		Err = OpenInpDlg(input_string, wc::fromUtf8(Str2), L"Enter password", L"", TRUE);
 +		if (Err == IDCLOSE) {
-+			// リストボックスの閉じるボタン(&確認ダイアログ)で、マクロの終了とする。
++			// 閉じるボタン(&確認ダイアログ)で、マクロの終了とする。
 +			TTLStatus = IdTTLEnd;
 +			return 0;
 +		} else {
@@ -403,7 +403,7 @@ http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpma
 -		free(u8);
 +		Err = OpenInpDlg(input_string,wc::fromUtf8(Str1),wc::fromUtf8(Str2),wc::fromUtf8(Str3),Paswd);
 +		if (Err == IDCLOSE) {
-+			// リストボックスの閉じるボタン(&確認ダイアログ)で、マクロの終了とする。
++			// 閉じるボタン(&確認ダイアログ)で、マクロの終了とする。
 +		  	TTLStatus = IdTTLEnd;
 +			SetStrVal(VarId, "");
 +		} else {

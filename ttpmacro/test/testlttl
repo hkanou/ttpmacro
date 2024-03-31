@@ -1,0 +1,41 @@
+; listbox
+strdim msg 4
+msg[0] = 'バナナ' 
+msg[1] = 'りんご'
+msg[2] = 'みかん'
+listbox '好きな食べ物を選んでください' 'default' msg
+listbox '好きな食べ物を選んでください' 'dclick=on' msg 'dclick=on'
+listbox '好きな食べ物を選んでください' 'minmaxbutton=on' msg 'minmaxbutton=on'
+listbox '好きな食べ物を選んでください' 'minimize=on' msg 'minimize=on'
+listbox '好きな食べ物を選んでください' 'maximize=on' msg 'maximize=on'
+listbox '好きな食べ物を選んでください' 'size=6x4' msg 'size=6x4'
+listbox '好きな食べ物を選んでください' 'size=6x4 1' msg 'size=6x4' 1
+listbox '好きな食べ物を選んでください' '2 dclick=on minmaxbutton=on size=6x4' msg 2 'dclick=on' 'minmaxbutton=on' 'size=6x4'
+listbox '好きな食べ物を選んでください' '3 dclick=on minmaxbutton=on size=60x20' msg 3 'dclick=on' 'minmaxbutton=on' 'size=60x20'
+
+; --------------------------------------------------------------------------------
+; statusbox
+statusbox 'statusbox' 'Title'
+
+; messagebox
+title="5行表示"
+message="1行目\n2行目\n3行目\n4行目\n5行目\n"
+strspecial message
+messagebox message title
+
+; yesnobox
+yesnobox 'yesnobox' 'Title'
+
+; inputbox
+inputbox 'inputbox' 'Title'
+
+; passwordbox
+passwordbox 'Enter password' 'passwordbox'
+
+; --------------------------------------------------------------------------------
+
+; dirnamebox
+dirnamebox 'select a directory'
+
+; filenamebox
+filenamebox 'File selection' 0

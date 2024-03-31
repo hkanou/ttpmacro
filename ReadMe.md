@@ -1,6 +1,6 @@
 # ttpmacro
 
-  - [ttpmacro_mod.exe](https://github.com/hkanou/ttpmacro/tree/main/Release) -- listbox修正版  
+  - [ttpmacro_mod.exe](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro/Release) -- listbox修正版  
     ttpmacro(teraterm-5.2)のlistboxに下記の修正を行ったものです。  
     - ダブルクリックによる項目選択に対応  
     - 最小化/最大化ボタンを追加  

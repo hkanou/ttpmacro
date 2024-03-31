@@ -1,6 +1,6 @@
 # ttpmacro
 
-  - [ttpmacro_mod.exe](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro/Release) -- listbox修正版
+  - [ttpmacro_mod.exe](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro/Release) -- listbox修正版  
     [使用方法](http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpmacro/doc/listbox.html)、
     [パッチ](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro)
 
@@ -12,7 +12,7 @@
     - 最大化状態での表示オプションの追加
     - ダイアログのサイズを拡大オプションの追加
 
-    動作環境 : [Tera Term 5](https://teratermproject.github.io/)
+    動作環境 : [Tera Term 5](https://teratermproject.github.io/)  
     ![Listbox Image](image/listbox.png)
 
 

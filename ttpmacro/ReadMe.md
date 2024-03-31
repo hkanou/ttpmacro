@@ -9,7 +9,7 @@
 
 # 使用方法
 
-(http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpmacro/doc/listbox.html)
+http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpmacro/doc/listbox.html
 
 # パッチ
 

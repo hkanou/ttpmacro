@@ -1,8 +1,8 @@
 # setpassword、getpasswordの暗号化機能追加パッチ
 
 - 書式  
-  setpassword \<filename\> \<password name\> \<strval\> <span style="color: red; ">[\<encryptstr\>]</span>  
-  getpassword \<filename\> \<password name\> \<strvar\> <span style="color: red; ">[\<encryptstr\>]</span>  
+  setpassword \<filename\> \<password name\> \<strval\> <font color="Red">[\<encryptstr\>]</font>  
+  getpassword \<filename\> \<password name\> \<strvar\> <font color="Red">[\<encryptstr\>]</font>  
 - 修正内容
   setpasswordとgetpasswordに\<encryptstr\>オプション(省略可能)を追加  
   \<encryptstr\>が指定された場合は、\<encryptstr\>を元に\<strval\>をAES-256-CTRで暗号化/復号する  

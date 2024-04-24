@@ -1,9 +1,10 @@
 # ttpmacro
 
-  - **listbox修正版**
+  - **listbox修正版**  
     [ttpmacro_mod.exe](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro/Release)、
     [使用方法](http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpmacro/doc/listbox.html)、
-    [パッチ](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro)
+    [パッチ](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro)  
+    動作環境 : [Tera Term 5](https://teratermproject.github.io/)  
 
     ttpmacro(teraterm-5.2)のlistboxに下記の修正を行ったものです。
     - アイコン画像の設定
@@ -13,17 +14,15 @@
     - 最大化状態表示オプション追加
     - ダイアログサイズ指定オプションの追加
 
-    動作環境 : [Tera Term 5](https://teratermproject.github.io/)
     ![Listbox Image](image/listbox.png)
 
   - **setpassword、getpassword暗号化機能追加版**  
     [ttpmacro_enc.exe](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro2/Release)、
     [使用方法](http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpmacro2/doc/setpassword.html)、
-    [パッチ](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro2)
-
-    ttpmacro(teraterm-5.2)のsetpassword、getpasswordのパスワードをAES-256-CTRで暗号化/復号対応用パッチです。
-
+    [パッチ](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro2)  
     動作環境 : [Tera Term 5](https://teratermproject.github.io/)
+
+    ttpmacro(teraterm-5.2)のsetpassword、getpasswordのパスワードをAES-256-CTRで暗号化/復号するためのパッチです。
 
 ## ビルド環境
 

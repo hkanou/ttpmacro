@@ -1,4 +1,4 @@
-# setpassword、getpasswordへの暗号化機能追加パッチ
+# setpassword、getpasswordの暗号化機能追加パッチ
 
 - 書式  
   setpassword \<filename\> \<password name\> \<strval\> [\<encryptstr\>]  

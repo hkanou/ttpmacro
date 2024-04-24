@@ -1,6 +1,6 @@
 # ttpmacro
 
-  - [ttpmacro_mod.exe](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro/Release) -- listbox修正版  
+  - [ttpmacro_mod.exe](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro/Release) -- **listbox修正版**  
     [使用方法](http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpmacro/doc/listbox.html)、
     [パッチ](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro)
 
@@ -15,7 +15,7 @@
     動作環境 : [Tera Term 5](https://teratermproject.github.io/)  
     ![Listbox Image](image/listbox.png)
 
-  - [ttpmacro_enc.exe](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro2/Release) -- setpassword、getpassword暗号対応版  
+  - [ttpmacro_enc.exe](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro2/Release) -- **setpassword、getpassword暗号対応版**  
     [使用方法](http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpmacro2/doc/setpassword.html)、 
     [パッチ](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro2)  
 

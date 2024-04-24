@@ -1,16 +1,16 @@
 # setpassword、getpasswordへの暗号化機能追加パッチ
 
 - 修正内容
-  setpasswordとgetpasswordに<encryptstr>オプション(省略可能)を追加  
-  <encryptstr>が指定された場合は、<encryptstr>を元に<strval>をAES-256-CTRで暗号化/復号する  
+  setpasswordとgetpasswordに\<encryptstr\>オプション(省略可能)を追加  
+  <encryptstr>が指定された場合は、\<encryptstr\>を元に\<strval\>をAES-256-CTRで暗号化/復号する  
 - 書式  
-  setpassword <filename> <password name> <strval> [<encryptstr>]  
-  getpassword <filename> <password name> <strvar> [<encryptstr>]  
+  setpassword \<filename\> \<password name\> \<strval\> [\<encryptstr\>]  
+  getpassword \<filename\> \<password name\> \<strvar\> [\<encryptstr\>]  
 
 # 詳細、使用方法
 
-http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpmacro2/doc/setpassword.html  
-http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpmacro2/doc/getpassword.html  
+[setpassword](http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpmacro2/doc/setpassword.html)  
+[getpassword](http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpmacro2/doc/getpassword.html)  
 
 # パッチ
 

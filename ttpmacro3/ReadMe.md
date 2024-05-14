@@ -1,15 +1,16 @@
 # ファイル操作コマンド暗号化機能追加パッチ
 
-    ※ 試作中  
+    **<ins>※ 試作中</ins>**  
 
     暗号化されたファイルの読み書き等を可能とするパッチです。  
     
     filecreate \<file handle\> \<filename\> **<ins>['password=abcd']</ins>**  
-    fileopen \<file handle\> \<filename\> <append flag> [<readonly flag>] **<ins>['password=abcd']</ins>**  
+    fileopen \<file handle\> \<filename\> \<append flag\> [<readonly flag>] **<ins>['password=abcd']</ins>**  
     fileconcat \<file1\> \<file2\> ['password1=abcd'] **<ins>['password2=abcd']</ins>**  
     filetruncate \<filename\> \<size\> **<ins>['password=abcd']</ins>**  
     
-    下記のコマンドが暗号化機能対応になります。
+    下記のコマンドが暗号化機能対応になります。  
+  
     fileread  
     filereadln  
     filewrite  

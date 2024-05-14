@@ -1,634 +1,28 @@
 # ファイル操作コマンド暗号化機能追加パッチ
 
-    **<ins>※ 試作中</ins>**  
+**<ins>※ 試作中</ins>**  
 
-    暗号化されたファイルの読み書き等を可能とするパッチです。  
-    
-    filecreate \<file handle\> \<filename\> **<ins>['password=abcd']</ins>**  
-    fileopen \<file handle\> \<filename\> \<append flag\> [<readonly flag>] **<ins>['password=abcd']</ins>**  
-    fileconcat \<file1\> \<file2\> ['password1=abcd'] **<ins>['password2=abcd']</ins>**  
-    filetruncate \<filename\> \<size\> **<ins>['password=abcd']</ins>**  
-    
-    下記のコマンドが暗号化機能対応になります。  
-  
-    fileread  
-    filereadln  
-    filewrite  
-    filewriteln  
-    fileseek  
-    fileseekback  
-    filemarkptr  
-    filestrseek  
-    filestrseek2  
-    fileclose  
+暗号化されたファイルの読み書き等を可能とするパッチです。  
+
+filecreate \<file handle\> \<filename\> **<ins>['password=abcd']</ins>**  
+fileopen \<file handle\> \<filename\> \<append flag\> [<readonly flag>] **<ins>['password=abcd']</ins>**  
+fileconcat \<file1\> \<file2\> ['password1=abcd'] **<ins>['password2=abcd']</ins>**  
+filetruncate \<filename\> \<size\> **<ins>['password=abcd']</ins>**  
+
+下記のコマンドが暗号化機能対応になります。  
+
+fileread  
+filereadln  
+filewrite  
+filewriteln  
+fileseek  
+fileseekback  
+filemarkptr  
+filestrseek  
+filestrseek2  
+fileclose  
 
 # パッチ  
-
-## % diff -rup ttl.cpp.org ttl.cpp
-```diff
---- ttl.cpp.org	2024-02-28 09:02:00.000000000 +0900
-+++ ttl.cpp	2024-05-12 19:54:28.315669600 +0900
-@@ -43,6 +43,7 @@
- #include "ttmlib.h"
- #include "ttlib.h"
- #include "ttmenc.h"
-+#include "ttmencfile.h"
- #include "tttypes.h"
- #include "ttmonig.h"
- #include <shellapi.h>
-@@ -107,7 +108,7 @@ static void HandleInit(void)
-  *	@retval	ファイルハンドルインデックス(0～)
-  *			-1のときエラー
-  */
--static int HandlePut(HANDLE FH)
-+static int HandlePut(HANDLE FH, CipherInfoP cip)
- {
- 	int i;
- 	if (FH == INVALID_HANDLE_VALUE) {
-@@ -117,13 +118,14 @@ static int HandlePut(HANDLE FH)
- 		if (FHandle[i] == INVALID_HANDLE_VALUE) {
- 			FHandle[i] = FH;
- 			FPointer[i] = 0;
-+			FCipher[i] = cip;
- 			return i;
- 		}
- 	}
- 	return -1;
- }
- 
--static HANDLE HandleGet(int fhi)
-+HANDLE HandleGet(int fhi)
- {
- 	if (fhi < 0 || _countof(FHandle) < fhi) {
- 		return INVALID_HANDLE_VALUE;
-@@ -139,10 +141,14 @@ static void HandleFree(int fhi)
- /**
-  *	@retval 読み込みバイト数
-  */
--static UINT win16_lread(HANDLE hFile, LPVOID lpBuffer, UINT uBytes)
-+static UINT win16_lread(HANDLE FH, LPVOID lpBuffer, UINT uBytes, CipherInfoP cip)
- {
-+	if (cip) {
-+		return Encrypt_lread(FH, lpBuffer, uBytes, cip);
-+	}
-+	
- 	DWORD NumberOfBytesRead;
--	BOOL Result = ReadFile(hFile, lpBuffer, uBytes, &NumberOfBytesRead, NULL);
-+	BOOL Result = ReadFile(FH, lpBuffer, uBytes, &NumberOfBytesRead, NULL);
- 	if (Result == FALSE) {
- 		return 0;
- 	}
-@@ -152,10 +158,14 @@ static UINT win16_lread(HANDLE hFile, LP
- /**
-  *	@retval 書き込みバイト数
-  */
--static UINT win16_lwrite(HANDLE hFile, const char*buf, UINT length)
-+static UINT win16_lwrite(HANDLE FH, LPVOID lpBuffer, UINT uBytes, CipherInfoP cip)
- {
-+	if (cip) {
-+		return Encrypt_lwrite(FH, lpBuffer, uBytes, cip);
-+	}
-+
- 	DWORD NumberOfBytesWritten;
--	BOOL result = WriteFile(hFile, buf, length, &NumberOfBytesWritten, NULL);
-+	BOOL result = WriteFile(FH, lpBuffer, uBytes, &NumberOfBytesWritten, NULL);
- 	if (result == FALSE) {
- 		return 0;
- 	}
-@@ -171,9 +181,13 @@ static UINT win16_lwrite(HANDLE hFile, c
-  *	@retval HFILE_ERROR((HFILE)-1)	エラー
-  *	@retval INVALID_SET_FILE_POINTER((DWORD)-1) エラー
-  */
--static LONG win16_llseek(HANDLE hFile, LONG lOffset, int iOrigin)
-+LONG win16_llseek(HANDLE FH, LONG lOffset, int iOrigin, CipherInfoP cip)
- {
--	DWORD pos = SetFilePointer(hFile, lOffset, NULL, iOrigin);
-+	if (cip) {
-+		return Encrypt_llseek(FH, lOffset, iOrigin, cip);
-+	}
-+
-+	DWORD pos = SetFilePointer(FH, lOffset, NULL, iOrigin);
- 	if (pos == INVALID_SET_FILE_POINTER) {
- 		return HFILE_ERROR;
- 	}
-@@ -293,6 +307,15 @@ void EndTTL()
- {
- 	int i;
- 
-+	if (FHandle[0] != 0) {
-+		for (i = 0; i< NumFHandle; i++) {
-+			if (FHandle[i] != INVALID_HANDLE_VALUE) {
-+				EncryptCloseFile(i);
-+				CloseHandle(FHandle[i]);
-+			}
-+		}
-+	}
-+
- 	CloseStatDlg();
- 
- 	if (DirHandle[0] != 0) {	// InitTTL() されずに EndTTL() 時対策
-@@ -1234,6 +1257,7 @@ static WORD TTLFileClose(void)
- 	if ((Err==0) && (GetFirstChar()!=0))
- 		Err = ErrSyntax;
- 	if (Err!=0) return Err;
-+	EncryptCloseFile(fhi);
- 	CloseHandle(FH);
- 	HandleFree(fhi);
- 	return Err;
-@@ -1243,10 +1267,31 @@ static WORD TTLFileConcat(void)
- {
- 	WORD Err;
- 	TStrVal FName1, FName2;
-+	TStrVal password1, password2;
- 
- 	Err = 0;
-+	password1[0] = 0;
-+	password2[0] = 0;
- 	GetStrVal(FName1,&Err);
- 	GetStrVal(FName2,&Err);
-+	while (CheckParameterGiven()) {
-+		TStrVal StrTmp;
-+		GetStrVal(StrTmp, &Err);
-+		if (Err == 0) {
-+			wchar_t dummy[MaxStrLen];
-+			if (_wcsnicmp(wc::fromUtf8(StrTmp), L"password1=", 10) == 0) {
-+				if (swscanf_s(wc::fromUtf8(StrTmp), L"%[^=]=%hs", dummy, MaxStrLen, password1, MaxStrLen) != 2) {
-+					Err = ErrSyntax;
-+				}
-+			} else if (_wcsnicmp(wc::fromUtf8(StrTmp), L"password2=", 10) == 0) {
-+				if (swscanf_s(wc::fromUtf8(StrTmp), L"%[^=]=%hs", dummy, MaxStrLen, password2, MaxStrLen) != 2) {
-+					Err = ErrSyntax;
-+				}
-+			}
-+		} else {
-+			break;
-+		}
-+	}
- 	if ((Err==0) &&
- 	    ((strlen(FName1)==0) ||
- 	     (strlen(FName2)==0) ||
-@@ -1271,6 +1316,13 @@ static WORD TTLFileConcat(void)
- 	}
- 
- 	wc FName1W = wc::fromUtf8(FName1);
-+	wc FName2W = wc::fromUtf8(FName2);
-+
-+	if (password1[0] != 0 || password2[0] != 0) {
-+		SetResult(EncryptFileConcat(FName1W, FName2W, password1, password2));
-+		return Err;
-+	}
-+
- 	HANDLE FH1 = CreateFileW(FName1W,
- 							 GENERIC_WRITE, 0, NULL,
- 							 OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-@@ -1281,7 +1333,6 @@ static WORD TTLFileConcat(void)
- 	SetFilePointer(FH1, 0, NULL, FILE_END);
- 
- 	int result = 0;
--	wc FName2W = wc::fromUtf8(FName2);
- 	HANDLE FH2 = CreateFileW(FName2W,
- 							 GENERIC_READ, FILE_SHARE_READ, NULL,
- 							 OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-@@ -1362,10 +1413,25 @@ static WORD TTLFileCreate(void)
- 	HANDLE FH;
- 	int fhi;
- 	TStrVal FName;
-+	TStrVal password;
-+	CipherInfoP cip = NULL;
- 
- 	Err = 0;
-+	password[0] = 0;
- 	GetIntVar(&VarId, &Err);
- 	GetStrVal(FName, &Err);
-+	if (CheckParameterGiven()) {
-+		TStrVal StrTmp;
-+		GetStrVal(StrTmp, &Err);
-+		if (Err == 0) {
-+			if (_wcsnicmp(wc::fromUtf8(StrTmp), L"password=", 9) == 0) {
-+				wchar_t dummy[MaxStrLen];
-+				if (swscanf_s(wc::fromUtf8(StrTmp), L"%[^=]=%hs", dummy, MaxStrLen, password, MaxStrLen) != 2) {
-+					Err = ErrSyntax;
-+				}
-+			}
-+		}
-+	}
- 	if ((Err==0) &&
- 	    ((strlen(FName)==0) || (GetFirstChar()!=0)))
- 		Err = ErrSyntax;
-@@ -1380,21 +1446,39 @@ static WORD TTLFileCreate(void)
- 		return Err;
- 	}
- 	wc FNameW = wc::fromUtf8(FName);
--	// TTL のファイルハンドルは filelock でロックするので、
--	// dwShareMode での共有モードは Read/Write とも有効にする。
--	FH = CreateFileW(FNameW,
--					 GENERIC_WRITE|GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
--					 CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
--	if (FH == INVALID_HANDLE_VALUE) {
--		SetResult(2);
--	}
--	else {
--		SetResult(0);
--	}
--	fhi = HandlePut(FH);
--	SetIntVal(VarId, fhi);
--	if (fhi == -1) {
--		CloseHandle(FH);
-+
-+	if (password[0] == 0) {
-+		// TTL のファイルハンドルは filelock でロックするので、
-+		// dwShareMode での共有モードは Read/Write とも有効にする。
-+		FH = CreateFileW(FNameW,
-+						 GENERIC_WRITE|GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
-+						 CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-+		if (FH == INVALID_HANDLE_VALUE) {
-+			SetResult(2);
-+		}
-+		else {
-+			SetResult(0);
-+		}
-+		fhi = HandlePut(FH, NULL);
-+		SetIntVal(VarId, fhi);
-+		if (fhi == -1) {
-+			CloseHandle(FH);
-+		}
-+	} else {
-+		FH = EncryptCreateFileW(FNameW,
-+								GENERIC_WRITE|GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
-+								CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL, password, &cip);
-+		if (FH == INVALID_HANDLE_VALUE) {
-+			SetResult(2);
-+		} else {
-+			SetResult(0);
-+		}
-+		fhi = HandlePut(FH, cip);
-+		SetIntVal(VarId, fhi);
-+		if (fhi == -1) {
-+			EncryptCloseHandle(fhi);
-+			CloseHandle(FH);
-+		}
- 	}
- 	return Err;
- }
-@@ -1442,7 +1526,7 @@ static WORD TTLFileMarkPtr(void)
- 	if ((Err==0) && (GetFirstChar()!=0))
- 		Err = ErrSyntax;
- 	if (Err!=0) return Err;
--	pos = win16_llseek(FH,0,1);	 /* mark current pos */
-+	pos = win16_llseek(FH, 0, FILE_CURRENT, FCipher[fhi]);	 /* mark current pos */
- 	if (pos == INVALID_SET_FILE_POINTER) {
- 		pos = 0;	// ?
- 	}
-@@ -1458,14 +1542,32 @@ static WORD TTLFileOpen(void)
- 	HANDLE FH;
- 	int Append, ReadonlyFlag=0;
- 	TStrVal FName;
-+	TStrVal password;
-+	CipherInfoP cip = NULL;
- 
- 	Err = 0;
- 	GetIntVar(&VarId, &Err);
- 	GetStrVal(FName, &Err);
- 	GetIntVal(&Append, &Err);
--	// get 4nd arg(optional) if given
--	if (CheckParameterGiven()) { // readonly
--		GetIntVal(&ReadonlyFlag, &Err);
-+
-+	password[0] = 0;
-+	while (CheckParameterGiven()) {
-+		TStrVal StrTmp;
-+		GetStrVal2(StrTmp, &Err, TRUE);
-+		if (Err != 0) {
-+			Err = ErrSyntax;
-+			break;
-+		}
-+		if (_wcsnicmp(wc::fromUtf8(StrTmp), L"password=", 9) == 0) {
-+			wchar_t dummy[MaxStrLen];
-+			if (swscanf_s(wc::fromUtf8(StrTmp), L"%[^=]=%hs", dummy, MaxStrLen, password, MaxStrLen) != 2) {
-+				Err = ErrSyntax;
-+			}
-+		} else {
-+			if (swscanf_s(wc::fromUtf8(StrTmp), L"%d", &ReadonlyFlag) != 1) {
-+				Err = ErrSyntax;
-+			}
-+		}
- 	}
- 	if ((Err==0) &&
- 	    ((strlen(FName)==0) || (GetFirstChar()!=0)))
-@@ -1478,33 +1580,61 @@ static WORD TTLFileOpen(void)
- 	}
- 
- 	wc FNameW = wc::fromUtf8(FName);
--	if (ReadonlyFlag) {
--		FH = CreateFileW(FNameW,
--						 GENERIC_READ, FILE_SHARE_READ, NULL,
--						 OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
--	}
--	else {
--		// ファイルをオープンする。
--		// 存在しない場合は作成した後オープンする。
--		// TTL のファイルハンドルは filelock でロックするので、
--		// dwShareMode での共有モードは Read/Write とも有効にする。
--		FH = CreateFileW(FNameW,
--						 GENERIC_WRITE|GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
--						 OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
--	}
--	if (FH == INVALID_HANDLE_VALUE) {
--		SetIntVal(VarId, -1);
--		return Err;
--	}
--	fhi = HandlePut(FH);
--	if (fhi == -1) {
--		SetIntVal(VarId, -1);
--		CloseHandle(FH);
--		return Err;
-+	if (password[0] == 0) {
-+		if (ReadonlyFlag) {
-+			FH = CreateFileW(FNameW,
-+							 GENERIC_READ, FILE_SHARE_READ, NULL,
-+							 OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-+		}
-+		else {
-+			// ファイルをオープンする。
-+			// 存在しない場合は作成した後オープンする。
-+			// TTL のファイルハンドルは filelock でロックするので、
-+			// dwShareMode での共有モードは Read/Write とも有効にする。
-+			FH = CreateFileW(FNameW,
-+							 GENERIC_WRITE|GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
-+							 OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-+		}
-+		if (FH == INVALID_HANDLE_VALUE) {
-+			SetIntVal(VarId, -1);
-+			return Err;
-+		}
-+		fhi = HandlePut(FH, NULL);
-+		if (fhi == -1) {
-+			SetIntVal(VarId, -1);
-+			CloseHandle(FH);
-+			return Err;
-+		}
-+	} else {
-+		if (ReadonlyFlag) {
-+			FH = EncryptCreateFileW(FNameW,
-+									GENERIC_READ, FILE_SHARE_READ, NULL,
-+									OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL, password, &cip);
-+		}
-+		else {
-+			// ファイルをオープンする。
-+			// 存在しない場合は作成した後オープンする。
-+			// TTL のファイルハンドルは filelock でロックするので、
-+			// dwShareMode での共有モードは Read/Write とも有効にする。
-+			FH = EncryptCreateFileW(FNameW,
-+									GENERIC_WRITE|GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
-+									OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL, password, &cip);
-+		}
-+		if (FH == INVALID_HANDLE_VALUE) {
-+			SetIntVal(VarId, -1);
-+			return Err;
-+		}
-+		fhi = HandlePut(FH, cip);
-+		if (fhi == -1) {
-+			SetIntVal(VarId, -1);
-+			EncryptCloseHandle(fhi);
-+			CloseHandle(FH);
-+			return Err;
-+		}
- 	}
- 	SetIntVal(VarId, fhi);
- 	if (Append!=0) {
--		SetFilePointer(FH, 0, NULL, FILE_END);
-+		win16_llseek(FH, 0, FILE_END, cip);
- 	}
- 	return 0;	// no error
- }
-@@ -1598,14 +1728,14 @@ static WORD TTLFileReadln(void)
- 	EndLine = FALSE;
- 	EndFile = TRUE;
- 	do {
--		c = win16_lread(FH, &b, 1);
-+		c = win16_lread(FH, &b, 1, FCipher[fhi]);
- 		if (c>0) EndFile = FALSE;
- 		if (c==1) {
- 			switch (b) {
- 				case 0x0d:
--					c = win16_lread(FH, &b, 1);
-+					c = win16_lread(FH, &b, 1, FCipher[fhi]);
- 					if ((c==1) && (b!=0x0a))
--						win16_llseek(FH, -1, 1);
-+						win16_llseek(FH, -1, 1, FCipher[fhi]);
- 					EndLine = TRUE;
- 					break;
- 				case 0x0a: EndLine = TRUE; break;
-@@ -1659,7 +1789,7 @@ static WORD TTLFileRead(void)
- 
- 	EndFile = FALSE;
- 	for (i = 0 ; i < ReadByte ; i++) {
--		c = win16_lread(FH,&b,1);
-+		c = win16_lread(FH, &b, 1, FCipher[fhi]);
- 		if (c <= 0) {  // EOF
- 			EndFile = TRUE;
- 			break;
-@@ -1758,7 +1888,7 @@ static WORD TTLFileSeek(void)
- 	if ((Err==0) && (GetFirstChar()!=0))
- 		Err = ErrSyntax;
- 	if (Err!=0) return Err;
--	win16_llseek(FH,i,j);
-+	win16_llseek(FH, i, j, FCipher[fhi]);
- 	return Err;
- }
- 
-@@ -1775,7 +1905,7 @@ static WORD TTLFileSeekBack(void)
- 		Err = ErrSyntax;
- 	if (Err!=0) return Err;
- 	/* move back to the marked pos */
--	win16_llseek(FH,FPointer[fhi],0);
-+	win16_llseek(FH, FPointer[fhi], 0, FCipher[fhi]);
- 	return Err;
- }
- 
-@@ -1896,13 +2026,13 @@ static WORD TTLFileStrSeek(void)
- 	    ((strlen(Str)==0) || (GetFirstChar()!=0)))
- 		Err = ErrSyntax;
- 	if (Err!=0) return Err;
--	pos = win16_llseek(FH,0,1);
-+	pos = win16_llseek(FH, 0, 1, FCipher[fhi]);
- 	if (pos == INVALID_SET_FILE_POINTER) return Err;
- 
- 	Len = strlen(Str);
- 	i = 0;
- 	do {
--		c = win16_lread(FH,&b,1);
-+		c = win16_lread(FH, &b, 1, FCipher[fhi]);
- 		if (c==1)
- 		{
- 			if (b==(BYTE)Str[i])
-@@ -1918,7 +2048,7 @@ static WORD TTLFileStrSeek(void)
- 		SetResult(1);
- 	else {
- 		SetResult(0);
--		win16_llseek(FH,pos,0);
-+		win16_llseek(FH, pos, 0, FCipher[fhi]);
- 	}
- 	return Err;
- }
-@@ -1942,7 +2072,7 @@ static WORD TTLFileStrSeek2(void)
- 	    ((strlen(Str)==0) || (GetFirstChar()!=0)))
- 		Err = ErrSyntax;
- 	if (Err!=0) return Err;
--	pos = win16_llseek(FH,0,1);
-+	pos = win16_llseek(FH, 0, 1, FCipher[fhi]);
- 	if (pos == INVALID_SET_FILE_POINTER) return Err;
- 
- 	Len = strlen(Str);
-@@ -1950,8 +2080,8 @@ static WORD TTLFileStrSeek2(void)
- 	pos2 = pos;
- 	do {
- 		Last = (pos2<=0);
--		c = win16_lread(FH,&b,1);
--		pos2 = win16_llseek(FH,-2,1);
-+		c = win16_lread(FH, &b, 1, FCipher[fhi]);
-+		pos2 = win16_llseek(FH, -2, 1, FCipher[fhi]);
- 		if (c==1)
- 		{
- 			if (b==(BYTE)Str[Len-1-i])
-@@ -1968,11 +2098,11 @@ static WORD TTLFileStrSeek2(void)
- 		// INVALID_SET_FILE_POINTER になるので、
- 		// ゼロオフセットになるように調整する。(2008.10.10 yutaka)
- 		if (pos2 == INVALID_SET_FILE_POINTER)
--			win16_llseek(FH, 0, 0);
-+			win16_llseek(FH, 0, 0, FCipher[fhi]);
- 		SetResult(1);
- 	} else {
- 		SetResult(0);
--		win16_llseek(FH,pos,0);
-+		win16_llseek(FH, pos, 0, FCipher[fhi]);
- 	}
- 	return Err;
- }
-@@ -1984,8 +2114,9 @@ static WORD TTLFileTruncate(void)
- 	int result = -1;
- 	int TruncByte;
- 	BOOL r;
--	HANDLE hFile;
-+	HANDLE FH;
- 	DWORD pos_low;
-+	TStrVal password;
- 
- 	GetStrVal(FName,&Err);
- 	if ((Err==0) &&
-@@ -2006,28 +2137,64 @@ static WORD TTLFileTruncate(void)
- 	}
- 	Err = 0;
- 
--	// ファイルオープン、存在しない場合は新規作成
--	hFile = CreateFileW(wc::fromUtf8(FName), GENERIC_READ|GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
--	if (hFile == INVALID_HANDLE_VALUE) {
--		goto end;
-+	password[0] = 0;
-+	if (CheckParameterGiven()) {
-+		TStrVal StrTmp;
-+		GetStrVal(StrTmp, &Err);
-+		if (Err == 0) {
-+			if (_wcsnicmp(wc::fromUtf8(StrTmp), L"password=", 9) == 0) {
-+				wchar_t dummy[MaxStrLen];
-+				if (swscanf_s(wc::fromUtf8(StrTmp), L"%[^=]=%hs", dummy, MaxStrLen, password, MaxStrLen) != 2) {
-+					Err = ErrSyntax;
-+					goto end;
-+				}
-+			}
-+		}
- 	}
- 
--	// ファイルを指定したサイズにする、
--	// 拡張した場合、拡張部分の内容は未定義
--	pos_low = SetFilePointer(hFile, TruncByte, NULL, FILE_BEGIN );
--	if (pos_low == INVALID_SET_FILE_POINTER) {
--		goto end_close;
--	}
--	r = SetEndOfFile(hFile);
--	if (r == FALSE) {
--		goto end_close;
-+	if (password[0] == 0) {
-+		// ファイルオープン、存在しない場合は新規作成
-+		FH = CreateFileW(wc::fromUtf8(FName), GENERIC_READ|GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-+		if (FH == INVALID_HANDLE_VALUE) {
-+			goto end;
-+		}
-+		// ファイルを指定したサイズにする、
-+		// 拡張した場合、拡張部分の内容は未定義
-+		pos_low = SetFilePointer(FH, TruncByte, NULL, FILE_BEGIN );
-+		if (pos_low == INVALID_SET_FILE_POINTER) {
-+			goto end_close;
-+		}
-+		r = SetEndOfFile(FH);
-+		if (r == FALSE) {
-+			goto end_close;
-+		}
-+	} else {
-+		CipherInfoP cip = NULL;
-+		FH = EncryptCreateFileW(wc::fromUtf8(FName), GENERIC_READ|GENERIC_WRITE, 0, NULL,
-+								OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL, password, &cip);
-+		if (FH == INVALID_HANDLE_VALUE) {
-+			goto end;
-+		}
-+		// 暗号化ファイルの本文を指定したサイズにする。
-+		// (ファイルサイズは指定したサイズ＋ENC_FILE_OFFSET)
-+		// 拡張した場合、拡張部分の内容はNULLパディング
-+		pos_low = win16_llseek(FH, TruncByte, FILE_BEGIN, cip);
-+		if (pos_low == INVALID_SET_FILE_POINTER) {
-+			EncryptCloseFile(FH, cip);
-+ 			goto end_close;
-+		}
-+		r = SetEndOfFile(FH);
-+		if (r == FALSE) {
-+			EncryptCloseFile(FH, cip);
-+ 			goto end_close;
-+		}
- 	}
- 
- 	result = 0;
- 	Err = 0;
- 
- end_close:
--	CloseHandle( hFile );
-+	CloseHandle(FH);
- end:
- 	SetResult(result);
- 	return Err;
-@@ -2046,13 +2213,15 @@ static WORD TTLFileWrite(BOOL addCRLF)
- 	FH = HandleGet(fhi);
- 	if (Err) return Err;
- 
-+	FCipher[fhi]->update = TRUE;
-+
- 	P = LinePtr;
- 	GetStrVal(Str, &Err);
- 	if (!Err) {
- 		if (GetFirstChar())
- 			return ErrSyntax;
- 
--		win16_lwrite(FH, Str, strlen(Str));
-+		win16_lwrite(FH, Str, strlen(Str), FCipher[fhi]);
- 	}
- 	else if (Err == ErrTypeMismatch) {
- 		Err = 0;
-@@ -2063,14 +2232,14 @@ static WORD TTLFileWrite(BOOL addCRLF)
- 			return ErrSyntax;
- 
- 		Str[0] = Val & 0xff;
--		win16_lwrite(FH, Str, 1);
-+		win16_lwrite(FH, Str, 1, FCipher[fhi]);
- 	}
- 	else {
- 		return Err;
- 	}
- 
- 	if (addCRLF) {
--		win16_lwrite(FH,"\015\012",2);
-+		win16_lwrite(FH, "\015\012", 2, FCipher[fhi]);
- 	}
- 	return 0;
- }
 
 ## 追加ファイル ttmencfile.h  
 ```cpp
@@ -1275,3 +669,609 @@ int EncryptCloseFile(HANDLE FH, CipherInfoP cip)
 	return 0;
 }
 ```
+
+## % diff -rup ttl.cpp.org ttl.cpp
+```diff
+--- ttl.cpp.org	2024-02-28 09:02:00.000000000 +0900
++++ ttl.cpp	2024-05-12 19:54:28.315669600 +0900
+@@ -43,6 +43,7 @@
+ #include "ttmlib.h"
+ #include "ttlib.h"
+ #include "ttmenc.h"
++#include "ttmencfile.h"
+ #include "tttypes.h"
+ #include "ttmonig.h"
+ #include <shellapi.h>
+@@ -107,7 +108,7 @@ static void HandleInit(void)
+  *	@retval	ファイルハンドルインデックス(0～)
+  *			-1のときエラー
+  */
+-static int HandlePut(HANDLE FH)
++static int HandlePut(HANDLE FH, CipherInfoP cip)
+ {
+ 	int i;
+ 	if (FH == INVALID_HANDLE_VALUE) {
+@@ -117,13 +118,14 @@ static int HandlePut(HANDLE FH)
+ 		if (FHandle[i] == INVALID_HANDLE_VALUE) {
+ 			FHandle[i] = FH;
+ 			FPointer[i] = 0;
++			FCipher[i] = cip;
+ 			return i;
+ 		}
+ 	}
+ 	return -1;
+ }
+ 
+-static HANDLE HandleGet(int fhi)
++HANDLE HandleGet(int fhi)
+ {
+ 	if (fhi < 0 || _countof(FHandle) < fhi) {
+ 		return INVALID_HANDLE_VALUE;
+@@ -139,10 +141,14 @@ static void HandleFree(int fhi)
+ /**
+  *	@retval 読み込みバイト数
+  */
+-static UINT win16_lread(HANDLE hFile, LPVOID lpBuffer, UINT uBytes)
++static UINT win16_lread(HANDLE FH, LPVOID lpBuffer, UINT uBytes, CipherInfoP cip)
+ {
++	if (cip) {
++		return Encrypt_lread(FH, lpBuffer, uBytes, cip);
++	}
++	
+ 	DWORD NumberOfBytesRead;
+-	BOOL Result = ReadFile(hFile, lpBuffer, uBytes, &NumberOfBytesRead, NULL);
++	BOOL Result = ReadFile(FH, lpBuffer, uBytes, &NumberOfBytesRead, NULL);
+ 	if (Result == FALSE) {
+ 		return 0;
+ 	}
+@@ -152,10 +158,14 @@ static UINT win16_lread(HANDLE hFile, LP
+ /**
+  *	@retval 書き込みバイト数
+  */
+-static UINT win16_lwrite(HANDLE hFile, const char*buf, UINT length)
++static UINT win16_lwrite(HANDLE FH, LPVOID lpBuffer, UINT uBytes, CipherInfoP cip)
+ {
++	if (cip) {
++		return Encrypt_lwrite(FH, lpBuffer, uBytes, cip);
++	}
++
+ 	DWORD NumberOfBytesWritten;
+-	BOOL result = WriteFile(hFile, buf, length, &NumberOfBytesWritten, NULL);
++	BOOL result = WriteFile(FH, lpBuffer, uBytes, &NumberOfBytesWritten, NULL);
+ 	if (result == FALSE) {
+ 		return 0;
+ 	}
+@@ -171,9 +181,13 @@ static UINT win16_lwrite(HANDLE hFile, c
+  *	@retval HFILE_ERROR((HFILE)-1)	エラー
+  *	@retval INVALID_SET_FILE_POINTER((DWORD)-1) エラー
+  */
+-static LONG win16_llseek(HANDLE hFile, LONG lOffset, int iOrigin)
++LONG win16_llseek(HANDLE FH, LONG lOffset, int iOrigin, CipherInfoP cip)
+ {
+-	DWORD pos = SetFilePointer(hFile, lOffset, NULL, iOrigin);
++	if (cip) {
++		return Encrypt_llseek(FH, lOffset, iOrigin, cip);
++	}
++
++	DWORD pos = SetFilePointer(FH, lOffset, NULL, iOrigin);
+ 	if (pos == INVALID_SET_FILE_POINTER) {
+ 		return HFILE_ERROR;
+ 	}
+@@ -293,6 +307,15 @@ void EndTTL()
+ {
+ 	int i;
+ 
++	if (FHandle[0] != 0) {
++		for (i = 0; i< NumFHandle; i++) {
++			if (FHandle[i] != INVALID_HANDLE_VALUE) {
++				EncryptCloseFile(i);
++				CloseHandle(FHandle[i]);
++			}
++		}
++	}
++
+ 	CloseStatDlg();
+ 
+ 	if (DirHandle[0] != 0) {	// InitTTL() されずに EndTTL() 時対策
+@@ -1234,6 +1257,7 @@ static WORD TTLFileClose(void)
+ 	if ((Err==0) && (GetFirstChar()!=0))
+ 		Err = ErrSyntax;
+ 	if (Err!=0) return Err;
++	EncryptCloseFile(fhi);
+ 	CloseHandle(FH);
+ 	HandleFree(fhi);
+ 	return Err;
+@@ -1243,10 +1267,31 @@ static WORD TTLFileConcat(void)
+ {
+ 	WORD Err;
+ 	TStrVal FName1, FName2;
++	TStrVal password1, password2;
+ 
+ 	Err = 0;
++	password1[0] = 0;
++	password2[0] = 0;
+ 	GetStrVal(FName1,&Err);
+ 	GetStrVal(FName2,&Err);
++	while (CheckParameterGiven()) {
++		TStrVal StrTmp;
++		GetStrVal(StrTmp, &Err);
++		if (Err == 0) {
++			wchar_t dummy[MaxStrLen];
++			if (_wcsnicmp(wc::fromUtf8(StrTmp), L"password1=", 10) == 0) {
++				if (swscanf_s(wc::fromUtf8(StrTmp), L"%[^=]=%hs", dummy, MaxStrLen, password1, MaxStrLen) != 2) {
++					Err = ErrSyntax;
++				}
++			} else if (_wcsnicmp(wc::fromUtf8(StrTmp), L"password2=", 10) == 0) {
++				if (swscanf_s(wc::fromUtf8(StrTmp), L"%[^=]=%hs", dummy, MaxStrLen, password2, MaxStrLen) != 2) {
++					Err = ErrSyntax;
++				}
++			}
++		} else {
++			break;
++		}
++	}
+ 	if ((Err==0) &&
+ 	    ((strlen(FName1)==0) ||
+ 	     (strlen(FName2)==0) ||
+@@ -1271,6 +1316,13 @@ static WORD TTLFileConcat(void)
+ 	}
+ 
+ 	wc FName1W = wc::fromUtf8(FName1);
++	wc FName2W = wc::fromUtf8(FName2);
++
++	if (password1[0] != 0 || password2[0] != 0) {
++		SetResult(EncryptFileConcat(FName1W, FName2W, password1, password2));
++		return Err;
++	}
++
+ 	HANDLE FH1 = CreateFileW(FName1W,
+ 							 GENERIC_WRITE, 0, NULL,
+ 							 OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+@@ -1281,7 +1333,6 @@ static WORD TTLFileConcat(void)
+ 	SetFilePointer(FH1, 0, NULL, FILE_END);
+ 
+ 	int result = 0;
+-	wc FName2W = wc::fromUtf8(FName2);
+ 	HANDLE FH2 = CreateFileW(FName2W,
+ 							 GENERIC_READ, FILE_SHARE_READ, NULL,
+ 							 OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+@@ -1362,10 +1413,25 @@ static WORD TTLFileCreate(void)
+ 	HANDLE FH;
+ 	int fhi;
+ 	TStrVal FName;
++	TStrVal password;
++	CipherInfoP cip = NULL;
+ 
+ 	Err = 0;
++	password[0] = 0;
+ 	GetIntVar(&VarId, &Err);
+ 	GetStrVal(FName, &Err);
++	if (CheckParameterGiven()) {
++		TStrVal StrTmp;
++		GetStrVal(StrTmp, &Err);
++		if (Err == 0) {
++			if (_wcsnicmp(wc::fromUtf8(StrTmp), L"password=", 9) == 0) {
++				wchar_t dummy[MaxStrLen];
++				if (swscanf_s(wc::fromUtf8(StrTmp), L"%[^=]=%hs", dummy, MaxStrLen, password, MaxStrLen) != 2) {
++					Err = ErrSyntax;
++				}
++			}
++		}
++	}
+ 	if ((Err==0) &&
+ 	    ((strlen(FName)==0) || (GetFirstChar()!=0)))
+ 		Err = ErrSyntax;
+@@ -1380,21 +1446,39 @@ static WORD TTLFileCreate(void)
+ 		return Err;
+ 	}
+ 	wc FNameW = wc::fromUtf8(FName);
+-	// TTL のファイルハンドルは filelock でロックするので、
+-	// dwShareMode での共有モードは Read/Write とも有効にする。
+-	FH = CreateFileW(FNameW,
+-					 GENERIC_WRITE|GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
+-					 CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+-	if (FH == INVALID_HANDLE_VALUE) {
+-		SetResult(2);
+-	}
+-	else {
+-		SetResult(0);
+-	}
+-	fhi = HandlePut(FH);
+-	SetIntVal(VarId, fhi);
+-	if (fhi == -1) {
+-		CloseHandle(FH);
++
++	if (password[0] == 0) {
++		// TTL のファイルハンドルは filelock でロックするので、
++		// dwShareMode での共有モードは Read/Write とも有効にする。
++		FH = CreateFileW(FNameW,
++						 GENERIC_WRITE|GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
++						 CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
++		if (FH == INVALID_HANDLE_VALUE) {
++			SetResult(2);
++		}
++		else {
++			SetResult(0);
++		}
++		fhi = HandlePut(FH, NULL);
++		SetIntVal(VarId, fhi);
++		if (fhi == -1) {
++			CloseHandle(FH);
++		}
++	} else {
++		FH = EncryptCreateFileW(FNameW,
++								GENERIC_WRITE|GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
++								CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL, password, &cip);
++		if (FH == INVALID_HANDLE_VALUE) {
++			SetResult(2);
++		} else {
++			SetResult(0);
++		}
++		fhi = HandlePut(FH, cip);
++		SetIntVal(VarId, fhi);
++		if (fhi == -1) {
++			EncryptCloseHandle(fhi);
++			CloseHandle(FH);
++		}
+ 	}
+ 	return Err;
+ }
+@@ -1442,7 +1526,7 @@ static WORD TTLFileMarkPtr(void)
+ 	if ((Err==0) && (GetFirstChar()!=0))
+ 		Err = ErrSyntax;
+ 	if (Err!=0) return Err;
+-	pos = win16_llseek(FH,0,1);	 /* mark current pos */
++	pos = win16_llseek(FH, 0, FILE_CURRENT, FCipher[fhi]);	 /* mark current pos */
+ 	if (pos == INVALID_SET_FILE_POINTER) {
+ 		pos = 0;	// ?
+ 	}
+@@ -1458,14 +1542,32 @@ static WORD TTLFileOpen(void)
+ 	HANDLE FH;
+ 	int Append, ReadonlyFlag=0;
+ 	TStrVal FName;
++	TStrVal password;
++	CipherInfoP cip = NULL;
+ 
+ 	Err = 0;
+ 	GetIntVar(&VarId, &Err);
+ 	GetStrVal(FName, &Err);
+ 	GetIntVal(&Append, &Err);
+-	// get 4nd arg(optional) if given
+-	if (CheckParameterGiven()) { // readonly
+-		GetIntVal(&ReadonlyFlag, &Err);
++
++	password[0] = 0;
++	while (CheckParameterGiven()) {
++		TStrVal StrTmp;
++		GetStrVal2(StrTmp, &Err, TRUE);
++		if (Err != 0) {
++			Err = ErrSyntax;
++			break;
++		}
++		if (_wcsnicmp(wc::fromUtf8(StrTmp), L"password=", 9) == 0) {
++			wchar_t dummy[MaxStrLen];
++			if (swscanf_s(wc::fromUtf8(StrTmp), L"%[^=]=%hs", dummy, MaxStrLen, password, MaxStrLen) != 2) {
++				Err = ErrSyntax;
++			}
++		} else {
++			if (swscanf_s(wc::fromUtf8(StrTmp), L"%d", &ReadonlyFlag) != 1) {
++				Err = ErrSyntax;
++			}
++		}
+ 	}
+ 	if ((Err==0) &&
+ 	    ((strlen(FName)==0) || (GetFirstChar()!=0)))
+@@ -1478,33 +1580,61 @@ static WORD TTLFileOpen(void)
+ 	}
+ 
+ 	wc FNameW = wc::fromUtf8(FName);
+-	if (ReadonlyFlag) {
+-		FH = CreateFileW(FNameW,
+-						 GENERIC_READ, FILE_SHARE_READ, NULL,
+-						 OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+-	}
+-	else {
+-		// ファイルをオープンする。
+-		// 存在しない場合は作成した後オープンする。
+-		// TTL のファイルハンドルは filelock でロックするので、
+-		// dwShareMode での共有モードは Read/Write とも有効にする。
+-		FH = CreateFileW(FNameW,
+-						 GENERIC_WRITE|GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
+-						 OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+-	}
+-	if (FH == INVALID_HANDLE_VALUE) {
+-		SetIntVal(VarId, -1);
+-		return Err;
+-	}
+-	fhi = HandlePut(FH);
+-	if (fhi == -1) {
+-		SetIntVal(VarId, -1);
+-		CloseHandle(FH);
+-		return Err;
++	if (password[0] == 0) {
++		if (ReadonlyFlag) {
++			FH = CreateFileW(FNameW,
++							 GENERIC_READ, FILE_SHARE_READ, NULL,
++							 OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
++		}
++		else {
++			// ファイルをオープンする。
++			// 存在しない場合は作成した後オープンする。
++			// TTL のファイルハンドルは filelock でロックするので、
++			// dwShareMode での共有モードは Read/Write とも有効にする。
++			FH = CreateFileW(FNameW,
++							 GENERIC_WRITE|GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
++							 OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
++		}
++		if (FH == INVALID_HANDLE_VALUE) {
++			SetIntVal(VarId, -1);
++			return Err;
++		}
++		fhi = HandlePut(FH, NULL);
++		if (fhi == -1) {
++			SetIntVal(VarId, -1);
++			CloseHandle(FH);
++			return Err;
++		}
++	} else {
++		if (ReadonlyFlag) {
++			FH = EncryptCreateFileW(FNameW,
++									GENERIC_READ, FILE_SHARE_READ, NULL,
++									OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL, password, &cip);
++		}
++		else {
++			// ファイルをオープンする。
++			// 存在しない場合は作成した後オープンする。
++			// TTL のファイルハンドルは filelock でロックするので、
++			// dwShareMode での共有モードは Read/Write とも有効にする。
++			FH = EncryptCreateFileW(FNameW,
++									GENERIC_WRITE|GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
++									OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL, password, &cip);
++		}
++		if (FH == INVALID_HANDLE_VALUE) {
++			SetIntVal(VarId, -1);
++			return Err;
++		}
++		fhi = HandlePut(FH, cip);
++		if (fhi == -1) {
++			SetIntVal(VarId, -1);
++			EncryptCloseHandle(fhi);
++			CloseHandle(FH);
++			return Err;
++		}
+ 	}
+ 	SetIntVal(VarId, fhi);
+ 	if (Append!=0) {
+-		SetFilePointer(FH, 0, NULL, FILE_END);
++		win16_llseek(FH, 0, FILE_END, cip);
+ 	}
+ 	return 0;	// no error
+ }
+@@ -1598,14 +1728,14 @@ static WORD TTLFileReadln(void)
+ 	EndLine = FALSE;
+ 	EndFile = TRUE;
+ 	do {
+-		c = win16_lread(FH, &b, 1);
++		c = win16_lread(FH, &b, 1, FCipher[fhi]);
+ 		if (c>0) EndFile = FALSE;
+ 		if (c==1) {
+ 			switch (b) {
+ 				case 0x0d:
+-					c = win16_lread(FH, &b, 1);
++					c = win16_lread(FH, &b, 1, FCipher[fhi]);
+ 					if ((c==1) && (b!=0x0a))
+-						win16_llseek(FH, -1, 1);
++						win16_llseek(FH, -1, 1, FCipher[fhi]);
+ 					EndLine = TRUE;
+ 					break;
+ 				case 0x0a: EndLine = TRUE; break;
+@@ -1659,7 +1789,7 @@ static WORD TTLFileRead(void)
+ 
+ 	EndFile = FALSE;
+ 	for (i = 0 ; i < ReadByte ; i++) {
+-		c = win16_lread(FH,&b,1);
++		c = win16_lread(FH, &b, 1, FCipher[fhi]);
+ 		if (c <= 0) {  // EOF
+ 			EndFile = TRUE;
+ 			break;
+@@ -1758,7 +1888,7 @@ static WORD TTLFileSeek(void)
+ 	if ((Err==0) && (GetFirstChar()!=0))
+ 		Err = ErrSyntax;
+ 	if (Err!=0) return Err;
+-	win16_llseek(FH,i,j);
++	win16_llseek(FH, i, j, FCipher[fhi]);
+ 	return Err;
+ }
+ 
+@@ -1775,7 +1905,7 @@ static WORD TTLFileSeekBack(void)
+ 		Err = ErrSyntax;
+ 	if (Err!=0) return Err;
+ 	/* move back to the marked pos */
+-	win16_llseek(FH,FPointer[fhi],0);
++	win16_llseek(FH, FPointer[fhi], 0, FCipher[fhi]);
+ 	return Err;
+ }
+ 
+@@ -1896,13 +2026,13 @@ static WORD TTLFileStrSeek(void)
+ 	    ((strlen(Str)==0) || (GetFirstChar()!=0)))
+ 		Err = ErrSyntax;
+ 	if (Err!=0) return Err;
+-	pos = win16_llseek(FH,0,1);
++	pos = win16_llseek(FH, 0, 1, FCipher[fhi]);
+ 	if (pos == INVALID_SET_FILE_POINTER) return Err;
+ 
+ 	Len = strlen(Str);
+ 	i = 0;
+ 	do {
+-		c = win16_lread(FH,&b,1);
++		c = win16_lread(FH, &b, 1, FCipher[fhi]);
+ 		if (c==1)
+ 		{
+ 			if (b==(BYTE)Str[i])
+@@ -1918,7 +2048,7 @@ static WORD TTLFileStrSeek(void)
+ 		SetResult(1);
+ 	else {
+ 		SetResult(0);
+-		win16_llseek(FH,pos,0);
++		win16_llseek(FH, pos, 0, FCipher[fhi]);
+ 	}
+ 	return Err;
+ }
+@@ -1942,7 +2072,7 @@ static WORD TTLFileStrSeek2(void)
+ 	    ((strlen(Str)==0) || (GetFirstChar()!=0)))
+ 		Err = ErrSyntax;
+ 	if (Err!=0) return Err;
+-	pos = win16_llseek(FH,0,1);
++	pos = win16_llseek(FH, 0, 1, FCipher[fhi]);
+ 	if (pos == INVALID_SET_FILE_POINTER) return Err;
+ 
+ 	Len = strlen(Str);
+@@ -1950,8 +2080,8 @@ static WORD TTLFileStrSeek2(void)
+ 	pos2 = pos;
+ 	do {
+ 		Last = (pos2<=0);
+-		c = win16_lread(FH,&b,1);
+-		pos2 = win16_llseek(FH,-2,1);
++		c = win16_lread(FH, &b, 1, FCipher[fhi]);
++		pos2 = win16_llseek(FH, -2, 1, FCipher[fhi]);
+ 		if (c==1)
+ 		{
+ 			if (b==(BYTE)Str[Len-1-i])
+@@ -1968,11 +2098,11 @@ static WORD TTLFileStrSeek2(void)
+ 		// INVALID_SET_FILE_POINTER になるので、
+ 		// ゼロオフセットになるように調整する。(2008.10.10 yutaka)
+ 		if (pos2 == INVALID_SET_FILE_POINTER)
+-			win16_llseek(FH, 0, 0);
++			win16_llseek(FH, 0, 0, FCipher[fhi]);
+ 		SetResult(1);
+ 	} else {
+ 		SetResult(0);
+-		win16_llseek(FH,pos,0);
++		win16_llseek(FH, pos, 0, FCipher[fhi]);
+ 	}
+ 	return Err;
+ }
+@@ -1984,8 +2114,9 @@ static WORD TTLFileTruncate(void)
+ 	int result = -1;
+ 	int TruncByte;
+ 	BOOL r;
+-	HANDLE hFile;
++	HANDLE FH;
+ 	DWORD pos_low;
++	TStrVal password;
+ 
+ 	GetStrVal(FName,&Err);
+ 	if ((Err==0) &&
+@@ -2006,28 +2137,64 @@ static WORD TTLFileTruncate(void)
+ 	}
+ 	Err = 0;
+ 
+-	// ファイルオープン、存在しない場合は新規作成
+-	hFile = CreateFileW(wc::fromUtf8(FName), GENERIC_READ|GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+-	if (hFile == INVALID_HANDLE_VALUE) {
+-		goto end;
++	password[0] = 0;
++	if (CheckParameterGiven()) {
++		TStrVal StrTmp;
++		GetStrVal(StrTmp, &Err);
++		if (Err == 0) {
++			if (_wcsnicmp(wc::fromUtf8(StrTmp), L"password=", 9) == 0) {
++				wchar_t dummy[MaxStrLen];
++				if (swscanf_s(wc::fromUtf8(StrTmp), L"%[^=]=%hs", dummy, MaxStrLen, password, MaxStrLen) != 2) {
++					Err = ErrSyntax;
++					goto end;
++				}
++			}
++		}
+ 	}
+ 
+-	// ファイルを指定したサイズにする、
+-	// 拡張した場合、拡張部分の内容は未定義
+-	pos_low = SetFilePointer(hFile, TruncByte, NULL, FILE_BEGIN );
+-	if (pos_low == INVALID_SET_FILE_POINTER) {
+-		goto end_close;
+-	}
+-	r = SetEndOfFile(hFile);
+-	if (r == FALSE) {
+-		goto end_close;
++	if (password[0] == 0) {
++		// ファイルオープン、存在しない場合は新規作成
++		FH = CreateFileW(wc::fromUtf8(FName), GENERIC_READ|GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
++		if (FH == INVALID_HANDLE_VALUE) {
++			goto end;
++		}
++		// ファイルを指定したサイズにする、
++		// 拡張した場合、拡張部分の内容は未定義
++		pos_low = SetFilePointer(FH, TruncByte, NULL, FILE_BEGIN );
++		if (pos_low == INVALID_SET_FILE_POINTER) {
++			goto end_close;
++		}
++		r = SetEndOfFile(FH);
++		if (r == FALSE) {
++			goto end_close;
++		}
++	} else {
++		CipherInfoP cip = NULL;
++		FH = EncryptCreateFileW(wc::fromUtf8(FName), GENERIC_READ|GENERIC_WRITE, 0, NULL,
++								OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL, password, &cip);
++		if (FH == INVALID_HANDLE_VALUE) {
++			goto end;
++		}
++		// 暗号化ファイルの本文を指定したサイズにする。
++		// (ファイルサイズは指定したサイズ＋ENC_FILE_OFFSET)
++		// 拡張した場合、拡張部分の内容はNULLパディング
++		pos_low = win16_llseek(FH, TruncByte, FILE_BEGIN, cip);
++		if (pos_low == INVALID_SET_FILE_POINTER) {
++			EncryptCloseFile(FH, cip);
++ 			goto end_close;
++		}
++		r = SetEndOfFile(FH);
++		if (r == FALSE) {
++			EncryptCloseFile(FH, cip);
++ 			goto end_close;
++		}
+ 	}
+ 
+ 	result = 0;
+ 	Err = 0;
+ 
+ end_close:
+-	CloseHandle( hFile );
++	CloseHandle(FH);
+ end:
+ 	SetResult(result);
+ 	return Err;
+@@ -2046,13 +2213,15 @@ static WORD TTLFileWrite(BOOL addCRLF)
+ 	FH = HandleGet(fhi);
+ 	if (Err) return Err;
+ 
++	FCipher[fhi]->update = TRUE;
++
+ 	P = LinePtr;
+ 	GetStrVal(Str, &Err);
+ 	if (!Err) {
+ 		if (GetFirstChar())
+ 			return ErrSyntax;
+ 
+-		win16_lwrite(FH, Str, strlen(Str));
++		win16_lwrite(FH, Str, strlen(Str), FCipher[fhi]);
+ 	}
+ 	else if (Err == ErrTypeMismatch) {
+ 		Err = 0;
+@@ -2063,14 +2232,14 @@ static WORD TTLFileWrite(BOOL addCRLF)
+ 			return ErrSyntax;
+ 
+ 		Str[0] = Val & 0xff;
+-		win16_lwrite(FH, Str, 1);
++		win16_lwrite(FH, Str, 1, FCipher[fhi]);
+ 	}
+ 	else {
+ 		return Err;
+ 	}
+ 
+ 	if (addCRLF) {
+-		win16_lwrite(FH,"\015\012",2);
++		win16_lwrite(FH, "\015\012", 2, FCipher[fhi]);
+ 	}
+ 	return 0;
+ }

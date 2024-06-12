@@ -6,7 +6,7 @@
 
 filecreate \<file handle\> \<filename\> **<ins>['password=abcd']</ins>**  
 fileopen \<file handle\> \<filename\> \<append flag\> [\<readonly flag\>] **<ins>['password=abcd']</ins>**  
-fileconcat \<file1\> \<file2\> ['password1=abcd'] **<ins>['password2=abcd']</ins>**  
+fileconcat \<file1\> \<file2\> **<ins>['password1=abcd'] ['password2=abcd']</ins>**  
 filetruncate \<filename\> \<size\> **<ins>['password=abcd']</ins>**  
 
 下記のコマンドが暗号化機能対応になります。  

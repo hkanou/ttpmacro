@@ -1,4 +1,4 @@
-# ttpmacro
+﻿# ttpmacro
 
   - **listbox修正版**  
     [ttpmacro_mod.exe](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro/Release)、

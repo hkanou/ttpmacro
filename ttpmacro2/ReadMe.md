@@ -1,18 +1,18 @@
-# setpasswordAgetpassword‚ÌˆÃ†‰»‹@”\’Ç‰Áƒpƒbƒ`
+ï»¿# setpasswordã€getpasswordã®æš—å·åŒ–æ©Ÿèƒ½è¿½åŠ ãƒ‘ãƒƒãƒ
 
-- ‘®  
+- æ›¸å¼  
   setpassword \<filename\> \<password name\> \<strval\> **<ins>[\<encryptstr\>]</ins>**  
   getpassword \<filename\> \<password name\> \<strvar\> **<ins>[\<encryptstr\>]</ins>**  
-- C³“à—e
-  setpassword‚Ægetpassword‚É\<encryptstr\>ƒIƒvƒVƒ‡ƒ“(È—ª‰Â”\)‚ğ’Ç‰Á  
-  \<encryptstr\>‚ªw’è‚³‚ê‚½ê‡‚ÍA\<encryptstr\>‚ğŒ³‚É\<strval\>‚ğAES-256-CTR‚ÅˆÃ†‰»/•œ†‚·‚é  
+- ä¿®æ­£å†…å®¹
+  setpasswordã¨getpasswordã«\<encryptstr\>ã‚ªãƒ—ã‚·ãƒ§ãƒ³(çœç•¥å¯èƒ½)ã‚’è¿½åŠ   
+  \<encryptstr\>ãŒæŒ‡å®šã•ã‚ŒãŸå ´åˆã¯ã€\<encryptstr\>ã‚’å…ƒã«\<strval\>ã‚’AES-256-CTRã§æš—å·åŒ–/å¾©å·ã™ã‚‹  
 
-# Ú×Ag—p•û–@
+# è©³ç´°ã€ä½¿ç”¨æ–¹æ³•
 
 [setpassword](http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpmacro2/doc/setpassword.html)  
 [getpassword](http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpmacro2/doc/getpassword.html)  
 
-# ƒpƒbƒ`
+# ãƒ‘ãƒƒãƒ
 
 ## % diff -rup ttpmacro_org/ttl.cpp ttpmacro_enc/ttl.cpp
 ```diff
@@ -32,12 +32,12 @@
  	WORD Err;
  	int result = 0;  /* failure */
 @@ -2536,6 +2536,13 @@ static WORD TTLSetPassword(void)
- 	GetStrVal(FileNameStr, &Err);   // ƒtƒ@ƒCƒ‹–¼
- 	GetStrVal(KeyStr, &Err);  // ƒL[–¼
- 	GetStrVal(PassStr, &Err);  // ƒpƒXƒ[ƒh
+ 	GetStrVal(FileNameStr, &Err);   // ãƒ•ã‚¡ã‚¤ãƒ«å
+ 	GetStrVal(KeyStr, &Err);  // ã‚­ãƒ¼å
+ 	GetStrVal(PassStr, &Err);  // ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰
 +	EncryptStr[0] = 0;
 +	if (CheckParameterGiven()) {
-+		GetStrVal(EncryptStr, &Err);  // ˆÃ†‰»•¶š—ñ
++		GetStrVal(EncryptStr, &Err);  // æš—å·åŒ–æ–‡å­—åˆ—
 +		if ((Err == 0) && (EncryptStr[0] == 0)) {
 +			return ErrSyntax;
 +		}
@@ -48,7 +48,7 @@
 @@ -2550,7 +2557,10 @@ static WORD TTLSetPassword(void)
  	GetAbsPath(FileNameStr, sizeof(FileNameStr));
  
- 	// ƒpƒXƒ[ƒh‚ğˆÃ†‰»‚·‚éB
+ 	// ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’æš—å·åŒ–ã™ã‚‹ã€‚
 -	Encrypt(PassStr, Temp);
 +	if (Encrypt(PassStr, Temp, EncryptStr) != 0) {
 +		SetResult(result);
@@ -73,9 +73,9 @@
  	WORD Err;
  	TVarId VarId;
 @@ -204,12 +204,19 @@ WORD TTLGetPassword()
- 	GetStrVal(Str,&Err);  // ƒtƒ@ƒCƒ‹–¼
- 	GetStrVal(Str2,&Err);  // ƒL[–¼
- 	GetStrVar(&VarId,&Err);  // ƒpƒXƒ[ƒhXV‚ÉƒpƒXƒ[ƒh‚ğŠi”[‚·‚é•Ï”
+ 	GetStrVal(Str,&Err);  // ãƒ•ã‚¡ã‚¤ãƒ«å
+ 	GetStrVal(Str2,&Err);  // ã‚­ãƒ¼å
+ 	GetStrVar(&VarId,&Err);  // ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰æ›´æ–°æ™‚ã«ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’æ ¼ç´ã™ã‚‹å¤‰æ•°
 -	if ((Err==0) && (GetFirstChar()!=0))
 -		Err = ErrSyntax;
 -	if (Err!=0) return Err;
@@ -84,7 +84,7 @@
  	if (Str2[0]==0) return Err;
 +	EncryptStr[0] = 0;
 +	if (CheckParameterGiven()) {
-+		GetStrVal(EncryptStr, &Err);  // ˆÃ†‰»•¶š—ñ
++		GetStrVal(EncryptStr, &Err);  // æš—å·åŒ–æ–‡å­—åˆ—
 +		if ((Err == 0) && (EncryptStr[0] == 0)) {
 +			return ErrSyntax;
 +		}
@@ -394,13 +394,13 @@
  }
 ```
 
-# ƒrƒ‹ƒh•û–@
+# ãƒ“ãƒ«ãƒ‰æ–¹æ³•
 
-- "’Ç‰Á‚ÌƒCƒ“ƒNƒ‹[ƒh ƒfƒBƒŒƒNƒgƒŠ"‚É‰º‹L‚ğ’Ç‰Á  
+- "è¿½åŠ ã®ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª"ã«ä¸‹è¨˜ã‚’è¿½åŠ   
   $(SolutionDir)..\libs\libressl\include  
-- "’Ç‰Á‚Ìƒ‰ƒCƒuƒ‰ƒŠ ƒfƒBƒŒƒNƒgƒŠ"‚É‰º‹L‚ğ’Ç‰Á  
+- "è¿½åŠ ã®ãƒ©ã‚¤ãƒ–ãƒ©ãƒª ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª"ã«ä¸‹è¨˜ã‚’è¿½åŠ   
   $(SolutionDir)..\libs\libressl\lib  
-- "’Ç‰Á‚ÌˆË‘¶ƒtƒ@ƒCƒ‹"‚Ìæ“ª‚É‰º‹L‚ğ’Ç‰Á  
+- "è¿½åŠ ã®ä¾å­˜ãƒ•ã‚¡ã‚¤ãƒ«"ã®å…ˆé ­ã«ä¸‹è¨˜ã‚’è¿½åŠ   
   common_static.lib  
   cryptod.lib  
   Bcrypt.lib  

@@ -1,15 +1,15 @@
-# ƒtƒ@ƒCƒ‹‘€ìƒRƒ}ƒ“ƒhˆÃ†‰»‹@”\’Ç‰Áƒpƒbƒ`
+ï»¿# ãƒ•ã‚¡ã‚¤ãƒ«æ“ä½œã‚³ãƒãƒ³ãƒ‰æš—å·åŒ–æ©Ÿèƒ½è¿½åŠ ãƒ‘ãƒƒãƒ
 
-**<ins>¦ ì’†</ins>**  
+**<ins>â€» è©¦ä½œä¸­</ins>**  
 
-ˆÃ†‰»‚³‚ê‚½ƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‘‚«“™‚ğ‰Â”\‚Æ‚·‚éƒpƒbƒ`‚Å‚·B  
+æš—å·åŒ–ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿æ›¸ãç­‰ã‚’å¯èƒ½ã¨ã™ã‚‹ãƒ‘ãƒƒãƒã§ã™ã€‚  
 
 filecreate \<file handle\> \<filename\> **<ins>['password=abcd']</ins>**  
 fileopen \<file handle\> \<filename\> \<append flag\> [\<readonly flag\>] **<ins>['password=abcd']</ins>**  
 fileconcat \<file1\> \<file2\> **<ins>['password1=abcd'] ['password2=abcd']</ins>**  
 filetruncate \<filename\> \<size\> **<ins>['password=abcd']</ins>**  
 
-‰º‹L‚ÌƒRƒ}ƒ“ƒh‚ªˆÃ†‰»‹@”\‘Î‰‚É‚È‚è‚Ü‚·B  
+ä¸‹è¨˜ã®ã‚³ãƒãƒ³ãƒ‰ãŒæš—å·åŒ–æ©Ÿèƒ½å¯¾å¿œã«ãªã‚Šã¾ã™ã€‚  
 
 fileread  
 filereadln  
@@ -22,9 +22,9 @@ filestrseek
 filestrseek2  
 fileclose  
 
-# ƒpƒbƒ`  
+# ãƒ‘ãƒƒãƒ  
 
-## ’Ç‰Áƒtƒ@ƒCƒ‹ ttmencfile.h  
+## è¿½åŠ ãƒ•ã‚¡ã‚¤ãƒ« ttmencfile.h  
 ```cpp
 /*
  * Copyright (C) 2024- TeraTerm Project
@@ -77,7 +77,7 @@ fileclose
 #define ENC_FILE_ITER		10000
 #define ENC_FILE_IKLEN 		32
 #define ENC_FILE_IVLEN 		16
-#define ENC_FILE_OFFSET		16 			// "Salted__"(8•¶š) { salt(8•¶š)
+#define ENC_FILE_OFFSET		16 			// "Salted__"(8æ–‡å­—) ï¼‹ salt(8æ–‡å­—)
 #define ENC_FILE_BUF_SIZE	1024
 
 typedef struct {
@@ -109,7 +109,7 @@ int EncryptCloseFile(HANDLE, CipherInfoP);
 int EncryptCloseFile(int);
 ```
 
-## ’Ç‰Áƒtƒ@ƒCƒ‹ ttmencfile.cpp  
+## è¿½åŠ ãƒ•ã‚¡ã‚¤ãƒ« ttmencfile.cpp  
 
 ```cpp
 /*
@@ -157,7 +157,7 @@ static void EncryptSetIv(unsigned char*, DWORD, unsigned char *);
 static void EncryptCloseHandle(CipherInfoP);
 
 /**
- *	@retval “Ç‚İ‚İƒoƒCƒg”
+ *	@retval èª­ã¿è¾¼ã¿ãƒã‚¤ãƒˆæ•°
  */
 UINT Encrypt_lread(HANDLE FH, LPVOID lpBuffer, UINT uBytes, CipherInfoP cip)
 {
@@ -209,7 +209,7 @@ UINT Encrypt_lread(HANDLE FH, LPVOID lpBuffer, UINT uBytes, CipherInfoP cip)
 }
 
 /**
- *	@retval ‘‚«‚İƒoƒCƒg”
+ *	@retval æ›¸ãè¾¼ã¿ãƒã‚¤ãƒˆæ•°
  */
 UINT Encrypt_lwrite(HANDLE FH, LPVOID lpBuffer, UINT uBytes, CipherInfoP cip)
 {
@@ -279,8 +279,8 @@ UINT Encrypt_lwrite(HANDLE FH, LPVOID lpBuffer, UINT uBytes, CipherInfoP cip)
  *				@arg 0(FILE_BEGIN)
  *				@arg 1(FILE_CURRENT)
  *				@arg 2(FILE_END)
- *	@retval ƒtƒ@ƒCƒ‹ˆÊ’u
- *	@retval HFILE_ERROR((HFILE)-1)	ƒGƒ‰[
+ *	@retval ãƒ•ã‚¡ã‚¤ãƒ«ä½ç½®
+ *	@retval HFILE_ERROR((HFILE)-1)	ã‚¨ãƒ©ãƒ¼
  */
 LONG Encrypt_llseek(HANDLE FH, LONG lOffset, int iOrigin, CipherInfoP cip)
 {
@@ -488,7 +488,7 @@ HANDLE EncryptCreateFileW(LPCWSTR lpFileName, DWORD dwDesiredAccess,
 		}
 	}
 
-	// •ÒW—p
+	// ç·¨é›†ç”¨
 	unsigned char tmpkeyiv[ENC_FILE_IKLEN + ENC_FILE_IVLEN];
 	if (PKCS5_PBKDF2_HMAC(password, strlen(password),
 						  (const unsigned char *)&salt, PKCS5_SALT_LEN,
@@ -503,7 +503,7 @@ HANDLE EncryptCreateFileW(LPCWSTR lpFileName, DWORD dwDesiredAccess,
 		goto end;
 	}
 
-	// ‘‚«‚İ—p
+	// æ›¸ãè¾¼ã¿ç”¨
 	if (RAND_bytes(salt, PKCS5_SALT_LEN) <= 0 ||
 		PKCS5_PBKDF2_HMAC(password, strlen(password),
 						  (const unsigned char *)&salt, PKCS5_SALT_LEN,
@@ -683,8 +683,8 @@ int EncryptCloseFile(HANDLE FH, CipherInfoP cip)
  #include "ttmonig.h"
  #include <shellapi.h>
 @@ -107,7 +108,7 @@ static void HandleInit(void)
-  *	@retval	ƒtƒ@ƒCƒ‹ƒnƒ“ƒhƒ‹ƒCƒ“ƒfƒbƒNƒX(0`)
-  *			-1‚Ì‚Æ‚«ƒGƒ‰[
+  *	@retval	ãƒ•ã‚¡ã‚¤ãƒ«ãƒãƒ³ãƒ‰ãƒ«ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹(0ï½)
+  *			-1ã®ã¨ãã‚¨ãƒ©ãƒ¼
   */
 -static int HandlePut(HANDLE FH)
 +static int HandlePut(HANDLE FH, CipherInfoP cip)
@@ -709,7 +709,7 @@ int EncryptCloseFile(HANDLE FH, CipherInfoP cip)
  		return INVALID_HANDLE_VALUE;
 @@ -139,10 +141,14 @@ static void HandleFree(int fhi)
  /**
-  *	@retval “Ç‚İ‚İƒoƒCƒg”
+  *	@retval èª­ã¿è¾¼ã¿ãƒã‚¤ãƒˆæ•°
   */
 -static UINT win16_lread(HANDLE hFile, LPVOID lpBuffer, UINT uBytes)
 +static UINT win16_lread(HANDLE FH, LPVOID lpBuffer, UINT uBytes, CipherInfoP cip)
@@ -726,7 +726,7 @@ int EncryptCloseFile(HANDLE FH, CipherInfoP cip)
  	}
 @@ -152,10 +158,14 @@ static UINT win16_lread(HANDLE hFile, LP
  /**
-  *	@retval ‘‚«‚İƒoƒCƒg”
+  *	@retval æ›¸ãè¾¼ã¿ãƒã‚¤ãƒˆæ•°
   */
 -static UINT win16_lwrite(HANDLE hFile, const char*buf, UINT length)
 +static UINT win16_lwrite(HANDLE FH, LPVOID lpBuffer, UINT uBytes, CipherInfoP cip)
@@ -742,8 +742,8 @@ int EncryptCloseFile(HANDLE FH, CipherInfoP cip)
  		return 0;
  	}
 @@ -171,9 +181,13 @@ static UINT win16_lwrite(HANDLE hFile, c
-  *	@retval HFILE_ERROR((HFILE)-1)	ƒGƒ‰[
-  *	@retval INVALID_SET_FILE_POINTER((DWORD)-1) ƒGƒ‰[
+  *	@retval HFILE_ERROR((HFILE)-1)	ã‚¨ãƒ©ãƒ¼
+  *	@retval INVALID_SET_FILE_POINTER((DWORD)-1) ã‚¨ãƒ©ãƒ¼
   */
 -static LONG win16_llseek(HANDLE hFile, LONG lOffset, int iOrigin)
 +LONG win16_llseek(HANDLE FH, LONG lOffset, int iOrigin, CipherInfoP cip)
@@ -772,7 +772,7 @@ int EncryptCloseFile(HANDLE FH, CipherInfoP cip)
 +
  	CloseStatDlg();
  
- 	if (DirHandle[0] != 0) {	// InitTTL() ‚³‚ê‚¸‚É EndTTL() ‘Îô
+ 	if (DirHandle[0] != 0) {	// InitTTL() ã•ã‚Œãšã« EndTTL() æ™‚å¯¾ç­–
 @@ -1234,6 +1257,7 @@ static WORD TTLFileClose(void)
  	if ((Err==0) && (GetFirstChar()!=0))
  		Err = ErrSyntax;
@@ -865,8 +865,8 @@ int EncryptCloseFile(HANDLE FH, CipherInfoP cip)
  		return Err;
  	}
  	wc FNameW = wc::fromUtf8(FName);
--	// TTL ‚Ìƒtƒ@ƒCƒ‹ƒnƒ“ƒhƒ‹‚Í filelock ‚ÅƒƒbƒN‚·‚é‚Ì‚ÅA
--	// dwShareMode ‚Å‚Ì‹¤—Lƒ‚[ƒh‚Í Read/Write ‚Æ‚à—LŒø‚É‚·‚éB
+-	// TTL ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒãƒ³ãƒ‰ãƒ«ã¯ filelock ã§ãƒ­ãƒƒã‚¯ã™ã‚‹ã®ã§ã€
+-	// dwShareMode ã§ã®å…±æœ‰ãƒ¢ãƒ¼ãƒ‰ã¯ Read/Write ã¨ã‚‚æœ‰åŠ¹ã«ã™ã‚‹ã€‚
 -	FH = CreateFileW(FNameW,
 -					 GENERIC_WRITE|GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
 -					 CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -882,8 +882,8 @@ int EncryptCloseFile(HANDLE FH, CipherInfoP cip)
 -		CloseHandle(FH);
 +
 +	if (password[0] == 0) {
-+		// TTL ‚Ìƒtƒ@ƒCƒ‹ƒnƒ“ƒhƒ‹‚Í filelock ‚ÅƒƒbƒN‚·‚é‚Ì‚ÅA
-+		// dwShareMode ‚Å‚Ì‹¤—Lƒ‚[ƒh‚Í Read/Write ‚Æ‚à—LŒø‚É‚·‚éB
++		// TTL ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒãƒ³ãƒ‰ãƒ«ã¯ filelock ã§ãƒ­ãƒƒã‚¯ã™ã‚‹ã®ã§ã€
++		// dwShareMode ã§ã®å…±æœ‰ãƒ¢ãƒ¼ãƒ‰ã¯ Read/Write ã¨ã‚‚æœ‰åŠ¹ã«ã™ã‚‹ã€‚
 +		FH = CreateFileW(FNameW,
 +						 GENERIC_WRITE|GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
 +						 CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -971,10 +971,10 @@ int EncryptCloseFile(HANDLE FH, CipherInfoP cip)
 -						 OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 -	}
 -	else {
--		// ƒtƒ@ƒCƒ‹‚ğƒI[ƒvƒ“‚·‚éB
--		// ‘¶İ‚µ‚È‚¢ê‡‚Íì¬‚µ‚½ŒãƒI[ƒvƒ“‚·‚éB
--		// TTL ‚Ìƒtƒ@ƒCƒ‹ƒnƒ“ƒhƒ‹‚Í filelock ‚ÅƒƒbƒN‚·‚é‚Ì‚ÅA
--		// dwShareMode ‚Å‚Ì‹¤—Lƒ‚[ƒh‚Í Read/Write ‚Æ‚à—LŒø‚É‚·‚éB
+-		// ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚ªãƒ¼ãƒ—ãƒ³ã™ã‚‹ã€‚
+-		// å­˜åœ¨ã—ãªã„å ´åˆã¯ä½œæˆã—ãŸå¾Œã‚ªãƒ¼ãƒ—ãƒ³ã™ã‚‹ã€‚
+-		// TTL ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒãƒ³ãƒ‰ãƒ«ã¯ filelock ã§ãƒ­ãƒƒã‚¯ã™ã‚‹ã®ã§ã€
+-		// dwShareMode ã§ã®å…±æœ‰ãƒ¢ãƒ¼ãƒ‰ã¯ Read/Write ã¨ã‚‚æœ‰åŠ¹ã«ã™ã‚‹ã€‚
 -		FH = CreateFileW(FNameW,
 -						 GENERIC_WRITE|GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
 -						 OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -995,10 +995,10 @@ int EncryptCloseFile(HANDLE FH, CipherInfoP cip)
 +							 OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 +		}
 +		else {
-+			// ƒtƒ@ƒCƒ‹‚ğƒI[ƒvƒ“‚·‚éB
-+			// ‘¶İ‚µ‚È‚¢ê‡‚Íì¬‚µ‚½ŒãƒI[ƒvƒ“‚·‚éB
-+			// TTL ‚Ìƒtƒ@ƒCƒ‹ƒnƒ“ƒhƒ‹‚Í filelock ‚ÅƒƒbƒN‚·‚é‚Ì‚ÅA
-+			// dwShareMode ‚Å‚Ì‹¤—Lƒ‚[ƒh‚Í Read/Write ‚Æ‚à—LŒø‚É‚·‚éB
++			// ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚ªãƒ¼ãƒ—ãƒ³ã™ã‚‹ã€‚
++			// å­˜åœ¨ã—ãªã„å ´åˆã¯ä½œæˆã—ãŸå¾Œã‚ªãƒ¼ãƒ—ãƒ³ã™ã‚‹ã€‚
++			// TTL ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒãƒ³ãƒ‰ãƒ«ã¯ filelock ã§ãƒ­ãƒƒã‚¯ã™ã‚‹ã®ã§ã€
++			// dwShareMode ã§ã®å…±æœ‰ãƒ¢ãƒ¼ãƒ‰ã¯ Read/Write ã¨ã‚‚æœ‰åŠ¹ã«ã™ã‚‹ã€‚
 +			FH = CreateFileW(FNameW,
 +							 GENERIC_WRITE|GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
 +							 OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -1020,10 +1020,10 @@ int EncryptCloseFile(HANDLE FH, CipherInfoP cip)
 +									OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL, password, &cip);
 +		}
 +		else {
-+			// ƒtƒ@ƒCƒ‹‚ğƒI[ƒvƒ“‚·‚éB
-+			// ‘¶İ‚µ‚È‚¢ê‡‚Íì¬‚µ‚½ŒãƒI[ƒvƒ“‚·‚éB
-+			// TTL ‚Ìƒtƒ@ƒCƒ‹ƒnƒ“ƒhƒ‹‚Í filelock ‚ÅƒƒbƒN‚·‚é‚Ì‚ÅA
-+			// dwShareMode ‚Å‚Ì‹¤—Lƒ‚[ƒh‚Í Read/Write ‚Æ‚à—LŒø‚É‚·‚éB
++			// ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚ªãƒ¼ãƒ—ãƒ³ã™ã‚‹ã€‚
++			// å­˜åœ¨ã—ãªã„å ´åˆã¯ä½œæˆã—ãŸå¾Œã‚ªãƒ¼ãƒ—ãƒ³ã™ã‚‹ã€‚
++			// TTL ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒãƒ³ãƒ‰ãƒ«ã¯ filelock ã§ãƒ­ãƒƒã‚¯ã™ã‚‹ã®ã§ã€
++			// dwShareMode ã§ã®å…±æœ‰ãƒ¢ãƒ¼ãƒ‰ã¯ Read/Write ã¨ã‚‚æœ‰åŠ¹ã«ã™ã‚‹ã€‚
 +			FH = EncryptCreateFileW(FNameW,
 +									GENERIC_WRITE|GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
 +									OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL, password, &cip);
@@ -1138,8 +1138,8 @@ int EncryptCloseFile(HANDLE FH, CipherInfoP cip)
  		{
  			if (b==(BYTE)Str[Len-1-i])
 @@ -1968,11 +2098,11 @@ static WORD TTLFileStrSeek2(void)
- 		// INVALID_SET_FILE_POINTER ‚É‚È‚é‚Ì‚ÅA
- 		// ƒ[ƒƒIƒtƒZƒbƒg‚É‚È‚é‚æ‚¤‚É’²®‚·‚éB(2008.10.10 yutaka)
+ 		// INVALID_SET_FILE_POINTER ã«ãªã‚‹ã®ã§ã€
+ 		// ã‚¼ãƒ­ã‚ªãƒ•ã‚»ãƒƒãƒˆã«ãªã‚‹ã‚ˆã†ã«èª¿æ•´ã™ã‚‹ã€‚(2008.10.10 yutaka)
  		if (pos2 == INVALID_SET_FILE_POINTER)
 -			win16_llseek(FH, 0, 0);
 +			win16_llseek(FH, 0, 0, FCipher[fhi]);
@@ -1166,7 +1166,7 @@ int EncryptCloseFile(HANDLE FH, CipherInfoP cip)
  	}
  	Err = 0;
  
--	// ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“A‘¶İ‚µ‚È‚¢ê‡‚ÍV‹Kì¬
+-	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³ã€å­˜åœ¨ã—ãªã„å ´åˆã¯æ–°è¦ä½œæˆ
 -	hFile = CreateFileW(wc::fromUtf8(FName), GENERIC_READ|GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 -	if (hFile == INVALID_HANDLE_VALUE) {
 -		goto end;
@@ -1185,8 +1185,8 @@ int EncryptCloseFile(HANDLE FH, CipherInfoP cip)
 +		}
  	}
  
--	// ƒtƒ@ƒCƒ‹‚ğw’è‚µ‚½ƒTƒCƒY‚É‚·‚éA
--	// Šg’£‚µ‚½ê‡AŠg’£•”•ª‚Ì“à—e‚Í–¢’è‹`
+-	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æŒ‡å®šã—ãŸã‚µã‚¤ã‚ºã«ã™ã‚‹ã€
+-	// æ‹¡å¼µã—ãŸå ´åˆã€æ‹¡å¼µéƒ¨åˆ†ã®å†…å®¹ã¯æœªå®šç¾©
 -	pos_low = SetFilePointer(hFile, TruncByte, NULL, FILE_BEGIN );
 -	if (pos_low == INVALID_SET_FILE_POINTER) {
 -		goto end_close;
@@ -1195,13 +1195,13 @@ int EncryptCloseFile(HANDLE FH, CipherInfoP cip)
 -	if (r == FALSE) {
 -		goto end_close;
 +	if (password[0] == 0) {
-+		// ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“A‘¶İ‚µ‚È‚¢ê‡‚ÍV‹Kì¬
++		// ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³ã€å­˜åœ¨ã—ãªã„å ´åˆã¯æ–°è¦ä½œæˆ
 +		FH = CreateFileW(wc::fromUtf8(FName), GENERIC_READ|GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 +		if (FH == INVALID_HANDLE_VALUE) {
 +			goto end;
 +		}
-+		// ƒtƒ@ƒCƒ‹‚ğw’è‚µ‚½ƒTƒCƒY‚É‚·‚éA
-+		// Šg’£‚µ‚½ê‡AŠg’£•”•ª‚Ì“à—e‚Í–¢’è‹`
++		// ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æŒ‡å®šã—ãŸã‚µã‚¤ã‚ºã«ã™ã‚‹ã€
++		// æ‹¡å¼µã—ãŸå ´åˆã€æ‹¡å¼µéƒ¨åˆ†ã®å†…å®¹ã¯æœªå®šç¾©
 +		pos_low = SetFilePointer(FH, TruncByte, NULL, FILE_BEGIN );
 +		if (pos_low == INVALID_SET_FILE_POINTER) {
 +			goto end_close;
@@ -1217,9 +1217,9 @@ int EncryptCloseFile(HANDLE FH, CipherInfoP cip)
 +		if (FH == INVALID_HANDLE_VALUE) {
 +			goto end;
 +		}
-+		// ˆÃ†‰»ƒtƒ@ƒCƒ‹‚Ì–{•¶‚ğw’è‚µ‚½ƒTƒCƒY‚É‚·‚éB
-+		// (ƒtƒ@ƒCƒ‹ƒTƒCƒY‚Íw’è‚µ‚½ƒTƒCƒY{ENC_FILE_OFFSET)
-+		// Šg’£‚µ‚½ê‡AŠg’£•”•ª‚Ì“à—e‚ÍNULLƒpƒfƒBƒ“ƒO
++		// æš—å·åŒ–ãƒ•ã‚¡ã‚¤ãƒ«ã®æœ¬æ–‡ã‚’æŒ‡å®šã—ãŸã‚µã‚¤ã‚ºã«ã™ã‚‹ã€‚
++		// (ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚ºã¯æŒ‡å®šã—ãŸã‚µã‚¤ã‚ºï¼‹ENC_FILE_OFFSET)
++		// æ‹¡å¼µã—ãŸå ´åˆã€æ‹¡å¼µéƒ¨åˆ†ã®å†…å®¹ã¯NULLãƒ‘ãƒ‡ã‚£ãƒ³ã‚°
 +		pos_low = win16_llseek(FH, TruncByte, FILE_BEGIN, cip);
 +		if (pos_low == INVALID_SET_FILE_POINTER) {
 +			EncryptCloseFile(FH, cip);

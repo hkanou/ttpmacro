@@ -1,16 +1,16 @@
-# listboxC³“à—e(‚»‚Ì‚Q)
+ï»¿# listboxä¿®æ­£å†…å®¹(ãã®ï¼’)
 
-- TTLƒRƒ}ƒ“ƒhlistbox‚Ö‚ÌƒIƒvƒVƒ‡ƒ“’Ç‰Á
+- TTLã‚³ãƒãƒ³ãƒ‰listboxã¸ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³è¿½åŠ 
 ```
-  ’Ç‰Á‘O listbox <message> <title> <string array> [<selected>]
-  ’Ç‰ÁŒã listbox <message> <title> <string array> [<selected> [['doubleclick'] ['minmaxbutton'] ['size=large']]]
-  —á) listbox '¡“ú‚Ì“V‹C‚Í‚Ç‚¤‚Å‚·‚©?' '‚ ‚È‚½‚Ö‚Ì–â‚¢' msg 6 'doubleclick' 'minmaxbutton' 'size=large'
-  ¦ —v–]‚ª‚ ‚ê‚Îsize=mediumAsize=huge‚ğ’Ç‰Á
+  è¿½åŠ å‰ listbox <message> <title> <string array> [<selected>]
+  è¿½åŠ å¾Œ listbox <message> <title> <string array> [<selected> [['doubleclick'] ['minmaxbutton'] ['size=large']]]
+  ä¾‹) listbox 'ä»Šæ—¥ã®å¤©æ°—ã¯ã©ã†ã§ã™ã‹?' 'ã‚ãªãŸã¸ã®å•ã„' msg 6 'doubleclick' 'minmaxbutton' 'size=large'
+  â€» è¦æœ›ãŒã‚ã‚Œã°size=mediumã€size=hugeã‚’è¿½åŠ 
 ```
-- ƒAƒCƒRƒ“‰æ‘œ‚Ì·‚µ‘Ö‚¦  
-- Å¬‰»/Å‘å‰»ƒ{ƒ^ƒ“‚Ì’Ç‰Á  
-- ƒ_ƒuƒ‹ƒNƒŠƒbƒN‚É‚æ‚é€–Ú‘I‘ğ‚É‘Î‰  
-- ƒ_ƒCƒAƒƒO‚ÌƒTƒCƒY‚ğŠg‘å
+- ã‚¢ã‚¤ã‚³ãƒ³ç”»åƒã®å·®ã—æ›¿ãˆ  
+- æœ€å°åŒ–/æœ€å¤§åŒ–ãƒœã‚¿ãƒ³ã®è¿½åŠ   
+- ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ã«ã‚ˆã‚‹é …ç›®é¸æŠã«å¯¾å¿œ  
+- ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ã‚µã‚¤ã‚ºã‚’æ‹¡å¤§
 
 ## % diff -up org/ttl_gui.cpp ttl_gui.cpp
 ```diff
@@ -61,8 +61,8 @@
  		if (sel < 0 || sel >= ary_size) {
  			sel = 0;
 @@ -426,7 +450,7 @@ static int MessageCommand(MessageCommand
- 		//   0ˆÈã: ‘I‘ğ€–Ú
- 		//   -1: ƒLƒƒƒ“ƒZƒ‹
+ 		//   0ä»¥ä¸Š: é¸æŠé …ç›®
+ 		//   -1: ã‚­ãƒ£ãƒ³ã‚»ãƒ«
  		//	 -2: close
 -		ret = OpenListDlg(wc::fromUtf8(Str1), wc::fromUtf8(Str2), s, sel);
 +		ret = OpenListDlg(wc::fromUtf8(Str1), wc::fromUtf8(Str2), s, sel, doubleclick, minmaxbutton, dlg_size);
@@ -91,8 +91,8 @@
 --- org/ttmdlg.cpp	2024-02-28 09:02:00.000000000 +0900
 +++ ttmdlg.cpp	2024-03-19 01:27:58.708966400 +0900
 @@ -282,11 +282,11 @@ void BringupStatDlg()
-  * @retval -1		cancelƒ{ƒ^ƒ“
-  * @retval -2		closeƒ{ƒ^ƒ“
+  * @retval -1		cancelãƒœã‚¿ãƒ³
+  * @retval -2		closeãƒœã‚¿ãƒ³
   */
 -int OpenListDlg(const wchar_t *Text, const wchar_t *Caption, wchar_t **Lists, int Selected)
 +int OpenListDlg(const wchar_t *Text, const wchar_t *Caption, wchar_t **Lists, int Selected, BOOL doubleclick, BOOL minmaxbutton, INT dlg_size)
@@ -139,7 +139,7 @@
 +++ ListDlg.cpp	2024-03-19 01:27:58.707956100 +0900
 @@ -43,7 +43,7 @@
  
- // CListDlg ƒ_ƒCƒAƒƒO
+ // CListDlg ãƒ€ã‚¤ã‚¢ãƒ­ã‚°
  
 -CListDlg::CListDlg(const wchar_t *Text, const wchar_t *Caption, wchar_t **Lists, int Selected, int x, int y)
 +CListDlg::CListDlg(const wchar_t *Text, const wchar_t *Caption, wchar_t **Lists, int Selected, int x, int y, BOOL doubleclick, BOOL minmaxbutton, INT dlg_size)
@@ -159,7 +159,7 @@
  {
 +	hInstList = hInst;
 +	if (m_dlg_size == 1) {
-+		// ƒ‰[ƒWƒTƒCƒY‚Ìê‡‚ÍAƒŠƒ\[ƒX‚ğ·‚µ‘Ö‚¦
++		// ãƒ©ãƒ¼ã‚¸ã‚µã‚¤ã‚ºã®å ´åˆã¯ã€ãƒªã‚½ãƒ¼ã‚¹ã‚’å·®ã—æ›¿ãˆ
 +		return TTCDialog::DoModal(hInst, hWndParent, IDD_LISTDLG_LARGE);
 +	}
  	return TTCDialog::DoModal(hInst, hWndParent, IDD);
@@ -169,21 +169,21 @@
  	HList = ::GetDlgItem(m_hWnd, IDC_LISTBOX);
  	InitList(HList);
  
-+	// ƒAƒCƒRƒ“‚ğİ’è
++	// ã‚¢ã‚¤ã‚³ãƒ³ã‚’è¨­å®š
 +	TTSetIcon(hInstList, m_hWnd, MAKEINTRESOURCEW(IDI_TTMACRO_FILE), 0);
 +	if(m_minmaxbutton == TRUE) {
-+		// Å¬AÅ‘å‰»ƒ{ƒ^ƒ“‚ğ’Ç‰Á
++		// æœ€å°ã€æœ€å¤§åŒ–ãƒœã‚¿ãƒ³ã‚’è¿½åŠ 
 +		ModifyStyle(0, WS_MINIMIZEBOX | WS_MAXIMIZEBOX);
 +	}
 +
- 	// –{•¶‚Æƒ^ƒCƒgƒ‹
+ 	// æœ¬æ–‡ã¨ã‚¿ã‚¤ãƒˆãƒ«
  	SetDlgItemTextW(IDC_LISTTEXT, m_Text);
  	SetWindowTextW(m_Caption);
 @@ -214,6 +229,18 @@ LRESULT CListDlg::DlgProc(UINT msg, WPAR
  {
  	switch (msg) {
  		case WM_SIZE:
-+			// Å¬‰»‚Ìê‡‚Ì‹““®‚ğ•ÏX
++			// æœ€å°åŒ–ã®å ´åˆã®æŒ™å‹•ã‚’å¤‰æ›´
 +			if (wp == SIZE_MINIMIZED) {
 +				minimized = TRUE;
 +				return TRUE;
@@ -203,7 +203,7 @@
  			ResizeHelper = NULL;
  			break;
 +		case WM_COMMAND:
-+			// ƒ_ƒuƒ‹ƒNƒŠƒbƒN‚ğ—LŒø‰»
++			// ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ã‚’æœ‰åŠ¹åŒ–
 +			if (m_doubleclick == TRUE) {
 +				if (HIWORD(wp) == LBN_DBLCLK) {
 +					OnOK();
@@ -238,7 +238,7 @@
      LTEXT           "Static",IDC_LISTTEXT,7,63,172,15
  END
  
-+// IDD_LISTDLG ƒ‰[ƒW”Å
++// IDD_LISTDLG ãƒ©ãƒ¼ã‚¸ç‰ˆ
 +IDD_LISTDLG_LARGE DIALOGEX 0, 0, 362, 223
 +STYLE DS_SETFONT | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 +CAPTION "Dialog"
@@ -275,7 +275,7 @@
 +BEGIN
 +    0
 +END
- #endif    // ‰pŒê (•Ä‘) resources
+ #endif    // è‹±èª (ç±³å›½) resources
  /////////////////////////////////////////////////////////////////////////////
  
 ```

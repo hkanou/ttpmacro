@@ -1,17 +1,17 @@
-# listboxC³“à—e
+ï»¿# listboxä¿®æ­£å†…å®¹
 
-- ƒAƒCƒRƒ“‰æ‘œ‚Ìİ’è  
-- ƒ_ƒuƒ‹ƒNƒŠƒbƒN‚É‚æ‚é€–Ú‘I‘ğƒIƒvƒVƒ‡ƒ“‚Ì’Ç‰Á  
-- Å¬‰»/Å‘å‰»ƒ{ƒ^ƒ“‚ÌƒIƒvƒVƒ‡ƒ“’Ç‰Á  
-- Å¬‰»ó‘Ô•\¦‚ÌƒIƒvƒVƒ‡ƒ“’Ç‰Á  
-- Å‘å‰»ó‘Ô•\¦‚ÌƒIƒvƒVƒ‡ƒ“’Ç‰Á  
-- ƒ_ƒCƒAƒƒOƒTƒCƒYw’èƒIƒvƒVƒ‡ƒ“‚Ì’Ç‰Á
+- ã‚¢ã‚¤ã‚³ãƒ³ç”»åƒã®è¨­å®š  
+- ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ã«ã‚ˆã‚‹é …ç›®é¸æŠã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®è¿½åŠ   
+- æœ€å°åŒ–/æœ€å¤§åŒ–ãƒœã‚¿ãƒ³ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³è¿½åŠ   
+- æœ€å°åŒ–çŠ¶æ…‹è¡¨ç¤ºã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³è¿½åŠ   
+- æœ€å¤§åŒ–çŠ¶æ…‹è¡¨ç¤ºã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³è¿½åŠ   
+- ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚µã‚¤ã‚ºæŒ‡å®šã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®è¿½åŠ 
 
-# g—p•û–@
+# ä½¿ç”¨æ–¹æ³•
 
 http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpmacro/doc/listbox.html
 
-# ƒpƒbƒ`
+# ãƒ‘ãƒƒãƒ
 
 ## % diff -rup ttpmacro_org/inpdlg.cpp ttpmacro/inpdlg.cpp
 ```diff
@@ -81,9 +81,9 @@ http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpma
  
  #include "ListDlg.h"
  
-+#define CONTROL_GAP_W	14		// ƒEƒBƒ“ƒhƒE’[‚ÆƒRƒ“ƒgƒ[ƒ‹ŠÔ‚Æ‚Ì•
++#define CONTROL_GAP_W	14		// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ç«¯ã¨ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«é–“ã¨ã®å¹…
 +
- // CListDlg ƒ_ƒCƒAƒƒO
+ // CListDlg ãƒ€ã‚¤ã‚¢ãƒ­ã‚°
  
 -CListDlg::CListDlg(const wchar_t *Text, const wchar_t *Caption, wchar_t **Lists, int Selected, int x, int y)
 +CListDlg::CListDlg(const wchar_t *Text, const wchar_t *Caption, wchar_t **Lists, int Selected, int x, int y, int ext, int width, int height)
@@ -124,7 +124,7 @@ http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpma
 +		ModifyStyle(0, WS_MINIMIZEBOX | WS_MAXIMIZEBOX);
 +	}
 +
- 	// –{•¶‚Æƒ^ƒCƒgƒ‹
+ 	// æœ¬æ–‡ã¨ã‚¿ã‚¤ãƒˆãƒ«
  	SetDlgItemTextW(IDC_LISTTEXT, m_Text);
  	SetWindowTextW(m_Caption);
 @@ -120,10 +133,6 @@ BOOL CListDlg::OnInitDialog()
@@ -176,10 +176,10 @@ http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpma
  	NonClientAreaWidth = WW - CW;
  	NonClientAreaHeight = WH - CH;
  
--#define CONTROL_GAP_W	14		// ƒEƒBƒ“ƒhƒE’[‚ÆƒRƒ“ƒgƒ[ƒ‹ŠÔ‚Æ‚Ì•
- 	// ‰‰ñ‚Ì‚İ
+-#define CONTROL_GAP_W	14		// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ç«¯ã¨ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«é–“ã¨ã®å¹…
+ 	// åˆå›ã®ã¿
  	if (is_init) {
- 		// ƒeƒLƒXƒgƒRƒ“ƒgƒ[ƒ‹ƒTƒCƒY‚ğ•â³
+ 		// ãƒ†ã‚­ã‚¹ãƒˆã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚µã‚¤ã‚ºã‚’è£œæ­£
 @@ -214,15 +248,34 @@ LRESULT CListDlg::DlgProc(UINT msg, WPAR
  {
  	switch (msg) {
@@ -306,7 +306,7 @@ http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpma
  BOOL CStatDlg::OnInitDialog()
  {
 +	TTSetIcon(m_hInst, m_hWnd, MAKEINTRESOURCEW(IDI_TTMACRO), 0);
-+	// •Â‚¶‚éƒ{ƒ^ƒ“‚ğ–³Œø‰»
++	// é–‰ã˜ã‚‹ãƒœã‚¿ãƒ³ã‚’ç„¡åŠ¹åŒ–
 +	RemoveMenu(GetSystemMenu(m_hWnd, FALSE), SC_CLOSE, MF_BYCOMMAND);
  
  	Update(TextStr,TitleStr,PosX,PosY);
@@ -378,7 +378,7 @@ http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpma
 -				result = 1;  /* success */
 +		Err = OpenInpDlg(input_string, wc::fromUtf8(Str2), L"Enter password", L"", TRUE);
 +		if (Err == IDCLOSE) {
-+			// •Â‚¶‚éƒ{ƒ^ƒ“(&Šm”Fƒ_ƒCƒAƒƒO)‚ÅAƒ}ƒNƒ‚ÌI—¹‚Æ‚·‚éB
++			// é–‰ã˜ã‚‹ãƒœã‚¿ãƒ³(&ç¢ºèªãƒ€ã‚¤ã‚¢ãƒ­ã‚°)ã§ã€ãƒã‚¯ãƒ­ã®çµ‚äº†ã¨ã™ã‚‹ã€‚
 +			TTLStatus = IdTTLEnd;
 +			return 0;
 +		} else {
@@ -403,7 +403,7 @@ http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpma
 -		free(u8);
 +		Err = OpenInpDlg(input_string,wc::fromUtf8(Str1),wc::fromUtf8(Str2),wc::fromUtf8(Str3),Paswd);
 +		if (Err == IDCLOSE) {
-+			// •Â‚¶‚éƒ{ƒ^ƒ“(&Šm”Fƒ_ƒCƒAƒƒO)‚ÅAƒ}ƒNƒ‚ÌI—¹‚Æ‚·‚éB
++			// é–‰ã˜ã‚‹ãƒœã‚¿ãƒ³(&ç¢ºèªãƒ€ã‚¤ã‚¢ãƒ­ã‚°)ã§ã€ãƒã‚¯ãƒ­ã®çµ‚äº†ã¨ã™ã‚‹ã€‚
 +		  	TTLStatus = IdTTLEnd;
 +			SetStrVal(VarId, "");
 +		} else {
@@ -428,7 +428,7 @@ http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpma
  	GetStrVal2(Str1, Err, TRUE);
 @@ -393,13 +411,44 @@ static int MessageCommand(MessageCommand
  	} else if (BoxId==IdListBox) {
- 		//  ƒŠƒXƒgƒ{ƒbƒNƒX‚Ì‘I‘ğˆ‚ğæ“¾‚·‚éB
+ 		//  ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®é¸æŠè‚¢ã‚’å–å¾—ã™ã‚‹ã€‚
  		GetStrAryVar(&VarId, Err);
 -
 -		if (CheckParameterGiven()) {
@@ -477,8 +477,8 @@ http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpma
  		ary_size = GetStrAryVarSize(VarId);
  		if (sel < 0 || sel >= ary_size) {
 @@ -426,7 +475,7 @@ static int MessageCommand(MessageCommand
- 		//   0ˆÈã: ‘I‘ğ€–Ú
- 		//   -1: ƒLƒƒƒ“ƒZƒ‹
+ 		//   0ä»¥ä¸Š: é¸æŠé …ç›®
+ 		//   -1: ã‚­ãƒ£ãƒ³ã‚»ãƒ«
  		//	 -2: close
 -		ret = OpenListDlg(wc::fromUtf8(Str1), wc::fromUtf8(Str2), s, sel);
 +		ret = OpenListDlg(wc::fromUtf8(Str1), wc::fromUtf8(Str2), s, sel, ext, width, height);
@@ -507,8 +507,8 @@ http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpma
  
  int OpenErrDlg(const char *Msg, const char *Line, int lineno, int start, int end, const char *FileName)
 @@ -282,11 +282,11 @@ void BringupStatDlg()
-  * @retval -1		cancelƒ{ƒ^ƒ“
-  * @retval -2		closeƒ{ƒ^ƒ“
+  * @retval -1		cancelãƒœã‚¿ãƒ³
+  * @retval -2		closeãƒœã‚¿ãƒ³
   */
 -int OpenListDlg(const wchar_t *Text, const wchar_t *Caption, wchar_t **Lists, int Selected)
 +int OpenListDlg(const wchar_t *Text, const wchar_t *Caption, wchar_t **Lists, int Selected, int ext, int DlgWidth, int DlgHeight)

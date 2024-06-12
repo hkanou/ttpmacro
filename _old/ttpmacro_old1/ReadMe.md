@@ -1,9 +1,9 @@
-# listbox�C�����e
+﻿# listbox修正内容
 
-- �A�C�R���摜�̍����ւ�  
-- �ŏ���/�ő剻�{�^���̒ǉ�  
-- �_�u���N���b�N�ɂ�鍀�ڑI���ɑΉ�  
-- �_�C�A���O�̃T�C�Y���g��
+- アイコン画像の差し替え  
+- 最小化/最大化ボタンの追加  
+- ダブルクリックによる項目選択に対応  
+- ダイアログのサイズを拡大
 
 ## % diff -up _org_ListDlg.cpp ListDlg.cpp
 ```diff
@@ -13,7 +13,7 @@
  
  INT_PTR CListDlg::DoModal(HINSTANCE hInst, HWND hWndParent)
  {
-+	// HINSTANCE��ۑ�
++	// HINSTANCEを保存
 +	hInstList = hInst;
  	return TTCDialog::DoModal(hInst, hWndParent, IDD);
  }
@@ -22,17 +22,17 @@
  	HList = ::GetDlgItem(m_hWnd, IDC_LISTBOX);
  	InitList(HList);
  
-+	// ���[�_���_�C�A���O�ɃA�C�R����ݒ� (2024/3/9)
++	// モーダルダイアログにアイコンを設定 (2024/3/9)
 +	TTSetIcon(hInstList, m_hWnd, MAKEINTRESOURCEW(IDI_TTMACRO_FILE), 0);
 +
- 	// �{���ƃ^�C�g��
+ 	// 本文とタイトル
  	SetDlgItemTextW(IDC_LISTTEXT, m_Text);
  	SetWindowTextW(m_Caption);
 @@ -214,6 +219,18 @@ LRESULT CListDlg::DlgProc(UINT msg, WPAR
  {
  	switch (msg) {
  		case WM_SIZE:
-+			// �ŏ����̏ꍇ�̋�����ύX (2024/3/9)
++			// 最小化の場合の挙動を変更 (2024/3/9)
 +			if (wp == SIZE_MINIMIZED) {
 +				minimized = TRUE;
 +				return TRUE;
@@ -52,7 +52,7 @@
  			ResizeHelper = NULL;
  			break;
 +		case WM_COMMAND:
-+			// �_�u���N���b�N��L���� (2024/3/9)
++			// ダブルクリックを有効化 (2024/3/9)
 +			if (HIWORD(wp) == LBN_DBLCLK) {
 +				OnOK();
 +				return TRUE;
@@ -71,7 +71,7 @@
         int init_WW, TW, TH, BH, BW, LW, LH;
         SIZE s;
         ReiseDlgHelper_t *ResizeHelper;
-+       // �ǉ� (2024/3/9)
++       // 追加 (2024/3/9)
 +       HINSTANCE hInstList;
 +       BOOL minimized = FALSE;
 
@@ -89,7 +89,7 @@
 
 -IDD_LISTDLG DIALOGEX 0, 0, 186, 86
 -STYLE DS_SETFONT | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-+// �ŏ���/�ő剻�{�^���ǉ��A�T�C�Y�ύX (2024/3/9)
++// 最小化/最大化ボタン追加、サイズ変更 (2024/3/9)
 +IDD_LISTDLG DIALOGEX 0, 0, 362, 223
 +STYLE DS_SETFONT | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX
  CAPTION "Dialog"

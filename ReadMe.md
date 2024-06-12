@@ -1,43 +1,43 @@
 # ttpmacro
 
-  - **listboxC³”Å**  
-    [ttpmacro_mod.exe](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro/Release)A
-    [g—p•û–@](http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpmacro/doc/listbox.html)A
-    [ƒpƒbƒ`](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro)B
-    (“®ìŠÂ‹« : [Tera Term 5](https://teratermproject.github.io/))
+  - **listboxä¿®æ­£ç‰ˆ**  
+    [ttpmacro_mod.exe](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro/Release)ã€
+    [ä½¿ç”¨æ–¹æ³•](http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpmacro/doc/listbox.html)ã€
+    [ãƒ‘ãƒƒãƒ](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro)ã€‚
+    (å‹•ä½œç’°å¢ƒ : [Tera Term 5](https://teratermproject.github.io/))
 
-    ttpmacro(teraterm-5.2)‚Ìlistbox‚É‰º‹L‚ÌC³‚ğs‚Á‚½‚à‚Ì‚Å‚·B
-    - ƒAƒCƒRƒ“‰æ‘œ‚Ìİ’è
-    - ƒ_ƒuƒ‹ƒNƒŠƒbƒN‚É‚æ‚é€–Ú‘I‘ğƒIƒvƒVƒ‡ƒ“‚Ì’Ç‰Á
-    - Å¬‰»/Å‘å‰»ƒ{ƒ^ƒ“ƒIƒvƒVƒ‡ƒ“’Ç‰Á
-    - Å¬‰»ó‘Ô•\¦ƒIƒvƒVƒ‡ƒ“’Ç‰Á
-    - Å‘å‰»ó‘Ô•\¦ƒIƒvƒVƒ‡ƒ“’Ç‰Á
-    - ƒ_ƒCƒAƒƒOƒTƒCƒYw’èƒIƒvƒVƒ‡ƒ“‚Ì’Ç‰Á
+    ttpmacro(teraterm-5.2)ã®listboxã«ä¸‹è¨˜ã®ä¿®æ­£ã‚’è¡Œã£ãŸã‚‚ã®ã§ã™ã€‚
+    - ã‚¢ã‚¤ã‚³ãƒ³ç”»åƒã®è¨­å®š
+    - ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ã«ã‚ˆã‚‹é …ç›®é¸æŠã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®è¿½åŠ 
+    - æœ€å°åŒ–/æœ€å¤§åŒ–ãƒœã‚¿ãƒ³ã‚ªãƒ—ã‚·ãƒ§ãƒ³è¿½åŠ 
+    - æœ€å°åŒ–çŠ¶æ…‹è¡¨ç¤ºã‚ªãƒ—ã‚·ãƒ§ãƒ³è¿½åŠ 
+    - æœ€å¤§åŒ–çŠ¶æ…‹è¡¨ç¤ºã‚ªãƒ—ã‚·ãƒ§ãƒ³è¿½åŠ 
+    - ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚µã‚¤ã‚ºæŒ‡å®šã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®è¿½åŠ 
 
     ![Listbox Image](image/listbox.png)
 
-  - **setpasswordAgetpasswordˆÃ†‰»‹@”\’Ç‰Á”Å**  
-    [ttpmacro_enc.exe](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro2/Release)A
-    [g—p•û–@](http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpmacro2/doc/setpassword.html)A
-    [ƒpƒbƒ`](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro2)B
-    (“®ìŠÂ‹« : [Tera Term 5](https://teratermproject.github.io/))
+  - **setpasswordã€getpasswordæš—å·åŒ–æ©Ÿèƒ½è¿½åŠ ç‰ˆ**  
+    [ttpmacro_enc.exe](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro2/Release)ã€
+    [ä½¿ç”¨æ–¹æ³•](http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpmacro2/doc/setpassword.html)ã€
+    [ãƒ‘ãƒƒãƒ](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro2)ã€‚
+    (å‹•ä½œç’°å¢ƒ : [Tera Term 5](https://teratermproject.github.io/))
 
-    ttpmacro(teraterm-5.2)‚ÌsetpasswordAgetpassword‚ÌƒpƒXƒ[ƒh‚ğAES-256-CTR‚ÅˆÃ†‰»/•œ†‚·‚é‚½‚ß‚Ìƒpƒbƒ`‚Å‚·B
+    ttpmacro(teraterm-5.2)ã®setpasswordã€getpasswordã®ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’AES-256-CTRã§æš—å·åŒ–/å¾©å·ã™ã‚‹ãŸã‚ã®ãƒ‘ãƒƒãƒã§ã™ã€‚
 
-  - **ƒtƒ@ƒCƒ‹‘€ìƒRƒ}ƒ“ƒhˆÃ†‰»‹@”\’Ç‰Á”Å**  
-    [ƒpƒbƒ`](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro3)B
-    (“®ìŠÂ‹« : [Tera Term 5](https://teratermproject.github.io/))
+  - **ãƒ•ã‚¡ã‚¤ãƒ«æ“ä½œã‚³ãƒãƒ³ãƒ‰æš—å·åŒ–æ©Ÿèƒ½è¿½åŠ ç‰ˆ**  
+    [ãƒ‘ãƒƒãƒ](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro3)ã€‚
+    (å‹•ä½œç’°å¢ƒ : [Tera Term 5](https://teratermproject.github.io/))
   
-    **<ins>¦ ì’†</ins>**  
+    **<ins>â€» è©¦ä½œä¸­</ins>**  
   
-    ˆÃ†‰»‚³‚ê‚½ƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‘‚«“™‚ğ‰Â”\‚Æ‚·‚éƒpƒbƒ`‚Å‚·B  
+    æš—å·åŒ–ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿æ›¸ãç­‰ã‚’å¯èƒ½ã¨ã™ã‚‹ãƒ‘ãƒƒãƒã§ã™ã€‚  
     
     filecreate \<file handle\> \<filename\> **<ins>['password=abcd']</ins>**  
     fileopen \<file handle\> \<filename\> \<append flag\> [\<readonly flag\>] **<ins>['password=abcd']</ins>**  
     fileconcat \<file1\> \<file2\> **<ins>['password1=abcd'] ['password2=abcd']</ins>**  
     filetruncate \<filename\> \<size\> **<ins>['password=abcd']</ins>**  
     
-    ‰º‹L‚ÌƒRƒ}ƒ“ƒh‚ªˆÃ†‰»‹@”\‘Î‰‚É‚È‚è‚Ü‚·B  
+    ä¸‹è¨˜ã®ã‚³ãƒãƒ³ãƒ‰ãŒæš—å·åŒ–æ©Ÿèƒ½å¯¾å¿œã«ãªã‚Šã¾ã™ã€‚  
   
     fileread  
     filereadln  
@@ -50,6 +50,6 @@
     filestrseek2  
     fileclose  
 
-## ƒrƒ‹ƒhŠÂ‹«
+## ãƒ“ãƒ«ãƒ‰ç’°å¢ƒ
 
   Visual Studio Express 2017

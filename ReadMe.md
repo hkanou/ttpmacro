@@ -49,7 +49,7 @@
 
 # ttpmenu
 
-  - **ログインパスワードの暗号化機能追加版**  
+  - **ログインパスワードの暗号化機能(LockBox)追加版**  
     [ttpmenu_mod.exe](https://github.com/hkanou/ttpmacro/tree/main/ttpmenu1/Release)  
     ![ttpmenu Image1](ttpmenu1/image/ttpmenu1.png)  
     ![ttpmenu Image2](ttpmenu1/image/ttpmenu2.png)

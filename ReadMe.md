@@ -2,8 +2,7 @@
 
   - **listbox修正版**  
     [ttpmacro_mod.exe](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro/Release)、
-    [使用方法](http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpmacro/doc/listbox.html)、
-    [パッチ](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro)。
+    [パッチ](https://github.com/TeraTermProject/teraterm/commit/7b3ccb4fe2999557aa7e17d6e0ceeb15156b9633)
     (動作環境 : [Tera Term 5](https://teratermproject.github.io/))
 
     ttpmacro(teraterm-5.2)のlistboxに下記の修正を行ったものです。
@@ -13,16 +12,19 @@
     - 最小化状態表示オプション追加
     - 最大化状態表示オプション追加
     - ダイアログサイズ指定オプションの追加
-
-    ![Listbox Image](image/listbox.png)
+  
+    Tera Termのソースにマージ頂きました。  
+    https://github.com/TeraTermProject/teraterm/pull/222
 
   - **setpassword、getpassword暗号化機能追加版**  
     [ttpmacro_enc.exe](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro2/Release)、
-    [使用方法](http://htmlpreview.github.io/?https://github.com/hkanou/ttpmacro/blob/main/ttpmacro2/doc/setpassword.html)、
-    [パッチ](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro2)。
+    [パッチ](https://github.com/TeraTermProject/teraterm/commit/e7d5453bfb6813567b24d90692b79e4c0060949a)
     (動作環境 : [Tera Term 5](https://teratermproject.github.io/))
 
     ttpmacro(teraterm-5.2)のsetpassword、getpasswordのパスワードをAES-256-CTRで暗号化/復号するためのパッチです。
+  
+    Tera Termのソースにマージ頂きました。  
+    https://github.com/TeraTermProject/teraterm/pull/211
 
   - **ファイル操作コマンド暗号化機能追加版**  
     [パッチ](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro3)。

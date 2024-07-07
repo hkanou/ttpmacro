@@ -1,7 +1,6 @@
 ﻿# ttpmacro
 
   - **listbox修正版**  
-    [ttpmacro_mod.exe](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro/Release)、
     [パッチ](https://github.com/TeraTermProject/teraterm/commit/7b3ccb4fe2999557aa7e17d6e0ceeb15156b9633)
     (動作環境 : [Tera Term 5](https://teratermproject.github.io/))
 
@@ -16,7 +15,6 @@
     - ダイアログサイズ指定オプションの追加
   
   - **setpassword、getpassword暗号化機能追加版**  
-    [ttpmacro_enc.exe](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro2/Release)、
     [パッチ](https://github.com/TeraTermProject/teraterm/commit/e7d5453bfb6813567b24d90692b79e4c0060949a)
     (動作環境 : [Tera Term 5](https://teratermproject.github.io/))
 
@@ -48,6 +46,13 @@
     filestrseek  
     filestrseek2  
     fileclose  
+
+# ttpmenu
+
+  - **ログインパスワードの暗号化機能追加版**  
+    [ttpmenu_mod.exe](https://github.com/hkanou/ttpmacro/tree/main/ttpmenu1/Release)  
+    ![ttpmenu Image1](ttpmenu1/image/ttpmenu1.png)  
+    ![ttpmenu Image2](ttpmenu1/image/ttpmenu2.png)
 
 ## ビルド環境
 

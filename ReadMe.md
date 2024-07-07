@@ -20,7 +20,7 @@
     [パッチ](https://github.com/TeraTermProject/teraterm/commit/e7d5453bfb6813567b24d90692b79e4c0060949a)
     (動作環境 : [Tera Term 5](https://teratermproject.github.io/))
 
-    ttpmacro(teraterm-5.2)のsetpassword、getpasswordのパスワードをAES-256-CTRで暗号化/復号するためのパッチです。
+    ttpmacro(teraterm-5.2)のsetpassword、getpasswordのパスワードをAES-256-CTRで暗号化/復号するためのパッチです。  
     → Tera Termのソースにマージ頂きました。https://github.com/TeraTermProject/teraterm/pull/211
 
   - **ファイル操作コマンド暗号化機能追加版**  

@@ -5,7 +5,9 @@
     [パッチ](https://github.com/TeraTermProject/teraterm/commit/7b3ccb4fe2999557aa7e17d6e0ceeb15156b9633)
     (動作環境 : [Tera Term 5](https://teratermproject.github.io/))
 
-    ttpmacro(teraterm-5.2)のlistboxに下記の修正を行ったものです。
+    ttpmacro(teraterm-5.2)のlistboxに下記の修正を行ったものです。  
+    → Tera Termのソースにマージ頂きました。https://github.com/TeraTermProject/teraterm/pull/222
+
     - アイコン画像の設定
     - ダブルクリックによる項目選択オプションの追加
     - 最小化/最大化ボタンオプション追加
@@ -13,18 +15,13 @@
     - 最大化状態表示オプション追加
     - ダイアログサイズ指定オプションの追加
   
-    Tera Termのソースにマージ頂きました。  
-    https://github.com/TeraTermProject/teraterm/pull/222
-
   - **setpassword、getpassword暗号化機能追加版**  
     [ttpmacro_enc.exe](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro2/Release)、
     [パッチ](https://github.com/TeraTermProject/teraterm/commit/e7d5453bfb6813567b24d90692b79e4c0060949a)
     (動作環境 : [Tera Term 5](https://teratermproject.github.io/))
 
     ttpmacro(teraterm-5.2)のsetpassword、getpasswordのパスワードをAES-256-CTRで暗号化/復号するためのパッチです。
-  
-    Tera Termのソースにマージ頂きました。  
-    https://github.com/TeraTermProject/teraterm/pull/211
+    → Tera Termのソースにマージ頂きました。https://github.com/TeraTermProject/teraterm/pull/211
 
   - **ファイル操作コマンド暗号化機能追加版**  
     [パッチ](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro3)。

@@ -60,5 +60,5 @@
 
 ## ビルド環境
 
-  Visual Studio Express 2017
+  Visual Studio Express 2017  
   Visual Studio Community 2022

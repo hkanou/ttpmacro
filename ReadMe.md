@@ -50,10 +50,15 @@
 # ttpmenu
 
   - **ログインパスワードの暗号化機能(LockBox)追加版**  
-    [ttpmenu_mod.exe](https://github.com/hkanou/ttpmacro/tree/main/ttpmenu1/Release)  
+    [パッチ](https://github.com/TeraTermProject/teraterm/pull/247/files)
+    (動作環境 : [Tera Term 5](https://teratermproject.github.io/))
+    ログインパスワードをAES-256-CTRで暗号化/復号する機能(LockBox)を追加したものです。  
+    → Tera Termのソースにマージ頂きました。https://github.com/TeraTermProject/teraterm/pull/247
+  
     ![ttpmenu Image1](ttpmenu1/image/ttpmenu1.png)  
     ![ttpmenu Image2](ttpmenu1/image/ttpmenu2.png)
 
 ## ビルド環境
 
   Visual Studio Express 2017
+  Visual Studio Community 2022

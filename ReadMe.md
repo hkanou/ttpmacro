@@ -52,7 +52,8 @@
     (動作環境 : [Tera Term 5](https://teratermproject.github.io/))
 
     VT window のテキスト領域の位置やサイズを取得する getttpos コマンドを追加するパッチです。  
-    [exeファイル等](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro4/Release)
+    [使い方](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro4)
+    [バイナリ](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro4/Release)
 
 # ttpmenu
 

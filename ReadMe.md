@@ -49,7 +49,7 @@
 
   - **ttpmacro : VT window のテキスト領域の位置、サイズ、最小化状態を取得する getttpos コマンド追加版**  
     [パッチ](https://github.com/TeraTermProject/teraterm/pull/269/files)
-    (動作環境 : [Tera Term 5](https://teratermproject.github.io/))
+    (動作環境 : Tera Term 5.2 dev 609f1b96 以降](https://ci.appveyor.com/project/teraterm/github-main/builds/50251240/artifacts)
 
     VT window のテキスト領域の位置やサイズを取得する getttpos コマンドを追加するパッチです。  
     [使い方](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro4)
@@ -59,7 +59,7 @@
 
   - **ログインパスワードの暗号化機能(LockBox)追加版**  
     [パッチ](https://github.com/TeraTermProject/teraterm/pull/247/files)
-    (動作環境 : Tera Term 5.2 dev 609f1b96 以降](https://ci.appveyor.com/project/teraterm/github-main/builds/50251240/artifacts)
+    (動作環境 : [Tera Term 5](https://teratermproject.github.io/))
     ログインパスワードをAES-256-CTRで暗号化/復号する機能(LockBox)を追加したものです。  
     → Tera Termのソースにマージ頂きました。https://github.com/TeraTermProject/teraterm/pull/247
   

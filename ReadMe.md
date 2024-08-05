@@ -59,7 +59,7 @@
 
   - **ログインパスワードの暗号化機能(LockBox)追加版**  
     [パッチ](https://github.com/TeraTermProject/teraterm/pull/247/files)
-    (動作環境 : [Tera Term 5.2 dev 609f1b96 以降](https://ci.appveyor.com/project/teraterm/github-main/builds/50251240/artifacts)
+    (動作環境 : Tera Term 5.2 dev 609f1b96 以降](https://ci.appveyor.com/project/teraterm/github-main/builds/50251240/artifacts)
     ログインパスワードをAES-256-CTRで暗号化/復号する機能(LockBox)を追加したものです。  
     → Tera Termのソースにマージ頂きました。https://github.com/TeraTermProject/teraterm/pull/247
   

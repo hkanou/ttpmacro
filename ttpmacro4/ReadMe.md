@@ -1,6 +1,7 @@
-# VT window のテキスト領域の位置やサイズを取得する getttpos コマンド追加版
+# ttpmacro : VT window のテキスト領域の位置やサイズを取得する getttpos コマンド追加版
 
-  [パッチ](https://github.com/TeraTermProject/teraterm/pull/269/files)
+  [パッチ](https://github.com/TeraTermProject/teraterm/pull/269/files)  
+  [バイナリ](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro4/Release)
 
 # 使用方法
 

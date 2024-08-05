@@ -47,11 +47,11 @@
     filestrseek2  
     fileclose  
 
-  - *ttpmacro : VT window のテキスト領域の位置、サイズ、最小化状態を取得する getttpos コマンド追加版***  
-    [パッチ](https://github.com/TeraTermProject/teraterm/pull/269/files)  
+  - ***ttpmacro : VT window のテキスト領域の位置、サイズ、最小化状態を取得する getttpos コマンド追加版***  
+    [パッチ](https://github.com/TeraTermProject/teraterm/pull/269/files)
+    (動作環境 : [Tera Term 5](https://teratermproject.github.io/))
 
     VT window のテキスト領域の位置やサイズを取得する getttpos コマンド追加パッチです。  
-    (動作環境 : [Tera Term 5](https://teratermproject.github.io/))  
     [exeファイル](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro4/Release)
 
 # ttpmenu

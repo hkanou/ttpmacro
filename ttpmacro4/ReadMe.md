@@ -1,25 +1,25 @@
-# ttpmacro : VT window ‚ÌƒeƒLƒXƒg—Ìˆæ‚ÌˆÊ’u‚âƒTƒCƒY‚ğæ“¾‚·‚é getttpos ƒRƒ}ƒ“ƒh’Ç‰Á”Å
+# ttpmacro : VT window ã®ãƒ†ã‚­ã‚¹ãƒˆé ˜åŸŸã®ä½ç½®ã‚„ã‚µã‚¤ã‚ºã‚’å–å¾—ã™ã‚‹ getttpos ã‚³ãƒãƒ³ãƒ‰è¿½åŠ ç‰ˆ
 
-  [ƒpƒbƒ`](https://github.com/TeraTermProject/teraterm/pull/269/files)  
-  [ƒoƒCƒiƒŠ](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro4/Release)
+  [ãƒ‘ãƒƒãƒ](https://github.com/TeraTermProject/teraterm/pull/269/files)  
+  [ãƒã‚¤ãƒŠãƒª](https://github.com/hkanou/ttpmacro/tree/main/ttpmacro4/Release)
 
-# g—p•û–@
+# ä½¿ç”¨æ–¹æ³•
 
 ```
 getttpos <x> <y> <width> <height> <minimized>
 
-  Tera Term‚ÌVT window‚Ì‰º‹L‚Ì’l‚ğæ“¾‚µ‚Ü‚·B(’PˆÊ:ƒsƒNƒZƒ‹)
+  Tera Termã®VT windowã®ä¸‹è¨˜ã®å€¤ã‚’å–å¾—ã—ã¾ã™ã€‚(å˜ä½:ãƒ”ã‚¯ã‚»ãƒ«)
 
-  <x>         ƒeƒLƒXƒg—Ìˆæ¶ã‹÷‚Ì X À•W
-  <y>         ƒeƒLƒXƒg—Ìˆæ¶ã‹÷‚Ì Y À•W
-  <width>     ƒeƒLƒXƒg—Ìˆæ‚Ì•
-  <height>    ƒeƒLƒXƒg—Ìˆæ‚Ì‚‚³
-  <minimized> VT window‚ÌÅ¬‰»ó‘Ô(0:’Êíó‘ÔA1:Å¬‰»ó‘Ô)
+  <x>         ãƒ†ã‚­ã‚¹ãƒˆé ˜åŸŸå·¦ä¸Šéš…ã® X åº§æ¨™
+  <y>         ãƒ†ã‚­ã‚¹ãƒˆé ˜åŸŸå·¦ä¸Šéš…ã® Y åº§æ¨™
+  <width>     ãƒ†ã‚­ã‚¹ãƒˆé ˜åŸŸã®å¹…
+  <height>    ãƒ†ã‚­ã‚¹ãƒˆé ˜åŸŸã®é«˜ã•
+  <minimized> VT windowã®æœ€å°åŒ–çŠ¶æ…‹(0:é€šå¸¸çŠ¶æ…‹ã€1:æœ€å°åŒ–çŠ¶æ…‹)
 
-  ¦ VT window‚ªÅ¬‰»‚³‚ê‚Ä‚¢‚éê‡‚ÍA<x> <y> <width> <height>‚É‚ÍŒë‚Á‚½’l‚ªİ’è‚³‚ê‚Ü‚·B
+  â€» VT windowãŒæœ€å°åŒ–ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€<x> <y> <width> <height>ã«ã¯èª¤ã£ãŸå€¤ãŒè¨­å®šã•ã‚Œã¾ã™ã€‚
 ```
 
-getttpos‚Åæ“¾‚µ‚½x,y‚ğsetdlgpos‚Ìx,y‚Åw’è‚·‚é‚ÆƒeƒLƒXƒg—Ìˆæ¶ã‹÷‚Éƒ_ƒCƒAƒƒO‚ª•\¦‚³‚ê‚Ü‚·B
+getttposã§å–å¾—ã—ãŸx,yã‚’setdlgposã®x,yã§æŒ‡å®šã™ã‚‹ã¨ãƒ†ã‚­ã‚¹ãƒˆé ˜åŸŸå·¦ä¸Šéš…ã«ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãŒè¡¨ç¤ºã•ã‚Œã¾ã™ã€‚
 
 
 ```

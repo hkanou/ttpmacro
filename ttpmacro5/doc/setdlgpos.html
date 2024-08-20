@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>setdlgpos</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="./style.css" type="text/css">
+</head>
+
+<body>
+
+
+<h1>setdlgpos</h1>
+
+<p>
+ダイアログボックスの位置を設定する。
+</p>
+
+<pre class="macro-syntax">
+setdlgpos [&lt;x&gt; &lt;y&gt; [&lt;position&gt; [&lt;offset x&gt; &lt;offset y&gt;]]]
+</pre>
+
+<h2>パラメータ</h2>
+
+<dl>
+	<dt class="macro">整数 &lt;x&gt;</dt>
+	<dd>ダイアログボックス左上隅の X 座標。</dd>
+
+	<dt class="macro">整数 &lt;y&gt;</dt>
+	<dd>ダイアログボックス左上隅の Y 座標。</dd>
+
+<font color="red">
+
+	<dt class="macro">整数 &lt;position&gt; (バージョン 5.X 以降)</dt>
+	<dd>ダイアログボックスの表示位置。<br>
+	  1 : ディスプレイの左上<br>
+	  2 : ディスプレイの右上<br>
+	  3 : ディスプレイの左下<br>
+	  4 : ディスプレイの右下<br>
+	  5 : ディスプレイの中央<br>
+	  6 : Tera Term の VT ウインドウの左上<br>
+	  7 : Tera Term の VT ウインドウの右上<br>
+	  8 : Tera Term の VT ウインドウの左下<br>
+	  9 : Tera Term の VT ウインドウの右下<br>
+	 10 : Tera Term の VT ウインドウの中央
+	</dd>
+
+	<dt class="macro">整数 &lt;offset x&gt; (バージョン 5.X 以降)</dt>
+	<dd>&lt;position&gt; で指定した表示位置の X 座標補正値</dd>
+
+	<dt class="macro">整数 &lt;offset y&gt; (バージョン 5.X 以降)</dt>
+	<dd>&lt;position&gt; で指定した表示位置の Y 座標補正値</dd>
+</font>
+</dl>
+
+<h2>返り値</h2>
+
+<dl>
+	<dt class="macro">無し</dt>
+</dl>
+
+<h2>解説</h2>
+
+<p>
+<a href="inputbox.html">"inputbox"</a>, <a href="listbox.html">"listbox"</a>, <a href="messagebox.html">"messagebox"</a>, <a href="passwordbox.html">"passwordbox"</a>, <a href="statusbox.html">"statusbox"</a>, <a href="yesnobox.html">"yesnobox"</a> コマンドで表示されるダイアログボックス、エラーダイアログ表示位置を位置を変更する。<br>
+また、ステータスダイアログボックスが表示されている場合、setdlgpos コマンドはそのダイアログボックスを移動させる。<br>
+ダイアログがディスプレイからはみ出す場合は、ディスプレイ内に移動される。<em>(バージョン 4.105以降)</em><br>
+座標の単位はピクセル。<br>
+</p>
+
+<ol>
+  <li>setdlgpos <em>(バージョン 4.105以降)</em><br>
+    パラメータ省略時の表示位置は、メインディスプレイ(プライマリディスプレイ)のデフォルト位置となる。
+  </li>
+  <li>setdlgpos &lt;x&gt; &lt;y&gt;<br>
+    &lt;x&gt; と &lt;y&gt; はダイアログボックス左上隅の座標 (x,y) を表わす。<br>
+    原点 (0,0) はメインディスプレイ左上隅。
+  </li>
+<font color="red">
+  <li>setdlgpos &lt;x&gt; &lt;y&gt; &lt;position&gt; <em>(バージョン 5.X 以降)</em>
+    <ul>
+      <li>&lt;position&gt; が 1 から 5 の場合<br>
+	MACRO が Tera Term とリンクされている場合は、VT ウインドウが表示されているディスプレイにダイアログボックスが表示される。<br>
+	MACRO が Tera Term とリンクされていない場合は、メインディスプレイにダイアログボックスが表示される。<br>
+	ダイアログボックスの表示位置は、&lt;position&gt; で指定した場所となる。
+      </li>
+      <li>&lt;position&gt; が 6 から 10 の場合<br>
+	MACRO が Tera Term とリンクされている場合は、VT ウインドウが表示されているディスプレイにダイアログボックスが表示される。<br>
+	MACRO が Tera Term とリンクされている場合の表示位置は、&lt;position&gt; で指定した場所となる。<br>
+	MACRO が Tera Term とリンクされていない、もしくは、Tera Term が最小化状態または非表示状態の場合は、メインディスプレイにダイアログボックスが表示される。<br>
+	この場合の表示位置は &lt;x&gt; &lt;y&gt; 座標となる。
+      </li>
+    </ul>
+  </li>
+  <li>setdlgpos &lt;x&gt; &lt;y&gt; &lt;position&gt; &lt;offset x&gt; &lt;offset y&gt; <em>(バージョン 5.X 以降)</em><br>
+    ダイアログボックスの表示位置は、setdlgpos &lt;x&gt; &lt;y&gt; &lt;position&gt; の表示位置(x,y座標)に &lt;offset x&gt; &lt;offset y&gt; を加算した場所となる。<br>
+    負の値を指定する場合は、<a href="../appendixes/negative.html">負の整数定数についての注意</a>を参照のこと。
+  </li>
+</font>
+</ol>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+; 左上の隅にダイアログボックス
+setdlgpos 0 0
+messagebox 'Message' 'Title'
+
+; ステータスダイアログボックスを開く
+setdlgpos 0 200
+statusbox 'Message' 'Title'
+
+; ステータスダイアログボックスを移動
+for i 0 200
+  setdlgpos i 200
+next
+</pre>
+
+<font color="red">
+
+<pre class="macro-example">
+setdlgpos 0 0 1 100 100
+messagebox 'setdlgpos 0 0 1 100 100' 'top-left of the display'
+
+setdlgpos 0 0 2 (-100) 100
+messagebox 'setdlgpos 0 0 2 -100 100' 'top-right of the display'
+
+setdlgpos 0 0 3 100 (-100)
+messagebox 'setdlgpos 0 0 3 100 -100' 'bottom-left of the display'
+
+setdlgpos 0 0 4 (-100) (-100)
+messagebox 'setdlgpos 0 0 4 -100 -100' 'bottom-right of the display'
+
+setdlgpos 0 0 5
+messagebox 'setdlgpos 0 0 5 ' 'center of the display'
+
+setdlgpos 0 0 6
+messagebox 'setdlgpos 0 0 6' 'top-left of the VT window'
+
+setdlgpos 0 0 7
+messagebox 'setdlgpos 0 0 7' 'top-right of the VT window'
+
+setdlgpos 0 0 8
+messagebox 'setdlgpos 0 0 8' 'bottom-left of the VT window'
+
+setdlgpos 0 0 9
+messagebox 'setdlgpos 0 0 9' 'bottom-right of the VT window'
+
+setdlgpos 0 0 10
+messagebox 'setdlgpos 0 0 10' 'center of the VT window'
+</pre>
+
+</font>
+
+<h2>参照</h2>
+<ul>
+  <li><a href="inputbox.html">inputbox</a></li>
+  <li><a href="listbox.html">listbox</a></li>
+  <li><a href="messagebox.html">messagebox</a></li>
+  <li><a href="passwordbox.html">passwordbox</a></li>
+  <li><a href="statusbox.html">statusbox</a></li>
+  <li><a href="yesnobox.html">yesnobox</a></li>
+  <li><a href="getttpos.html">getttpos</a></li>
+  <li><a href="../appendixes/negative.html">負の整数定数についての注意</a></li>
+</ul>
+
+</body>
+</html>

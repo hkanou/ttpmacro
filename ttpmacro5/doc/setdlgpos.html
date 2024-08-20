@@ -14,104 +14,104 @@
 <h1>setdlgpos</h1>
 
 <p>
-�_�C�A���O�{�b�N�X�̈ʒu��ݒ肷��B
+ダイアログボックスの位置を設定する。
 </p>
 
 <pre class="macro-syntax">
 setdlgpos [&lt;x&gt; &lt;y&gt; [&lt;position&gt; [&lt;offset x&gt; &lt;offset y&gt;]]]
 </pre>
 
-<h2>�p�����[�^</h2>
+<h2>パラメータ</h2>
 
 <dl>
-	<dt class="macro">���� &lt;x&gt;</dt>
-	<dd>�_�C�A���O�{�b�N�X������� X ���W�B</dd>
+	<dt class="macro">整数 &lt;x&gt;</dt>
+	<dd>ダイアログボックス左上隅の X 座標。</dd>
 
-	<dt class="macro">���� &lt;y&gt;</dt>
-	<dd>�_�C�A���O�{�b�N�X������� Y ���W�B</dd>
+	<dt class="macro">整数 &lt;y&gt;</dt>
+	<dd>ダイアログボックス左上隅の Y 座標。</dd>
 
 <font color="red">
 
-	<dt class="macro">���� &lt;position&gt; (�o�[�W���� 5.X �ȍ~)</dt>
-	<dd>�_�C�A���O�{�b�N�X�̕\���ʒu�B<br>
-	  1 : �f�B�X�v���C�̍���<br>
-	  2 : �f�B�X�v���C�̉E��<br>
-	  3 : �f�B�X�v���C�̍���<br>
-	  4 : �f�B�X�v���C�̉E��<br>
-	  5 : �f�B�X�v���C�̒���<br>
-	  6 : Tera Term �� VT �E�C���h�E�̍���<br>
-	  7 : Tera Term �� VT �E�C���h�E�̉E��<br>
-	  8 : Tera Term �� VT �E�C���h�E�̍���<br>
-	  9 : Tera Term �� VT �E�C���h�E�̉E��<br>
-	 10 : Tera Term �� VT �E�C���h�E�̒���
+	<dt class="macro">整数 &lt;position&gt; (バージョン 5.X 以降)</dt>
+	<dd>ダイアログボックスの表示位置。<br>
+	  1 : ディスプレイの左上<br>
+	  2 : ディスプレイの右上<br>
+	  3 : ディスプレイの左下<br>
+	  4 : ディスプレイの右下<br>
+	  5 : ディスプレイの中央<br>
+	  6 : Tera Term の VT ウインドウの左上<br>
+	  7 : Tera Term の VT ウインドウの右上<br>
+	  8 : Tera Term の VT ウインドウの左下<br>
+	  9 : Tera Term の VT ウインドウの右下<br>
+	 10 : Tera Term の VT ウインドウの中央
 	</dd>
 
-	<dt class="macro">���� &lt;offset x&gt; (�o�[�W���� 5.X �ȍ~)</dt>
-	<dd>&lt;position&gt; �Ŏw�肵���\���ʒu�� X ���W�␳�l</dd>
+	<dt class="macro">整数 &lt;offset x&gt; (バージョン 5.X 以降)</dt>
+	<dd>&lt;position&gt; で指定した表示位置の X 座標補正値</dd>
 
-	<dt class="macro">���� &lt;offset y&gt; (�o�[�W���� 5.X �ȍ~)</dt>
-	<dd>&lt;position&gt; �Ŏw�肵���\���ʒu�� Y ���W�␳�l</dd>
+	<dt class="macro">整数 &lt;offset y&gt; (バージョン 5.X 以降)</dt>
+	<dd>&lt;position&gt; で指定した表示位置の Y 座標補正値</dd>
 </font>
 </dl>
 
-<h2>�Ԃ�l</h2>
+<h2>返り値</h2>
 
 <dl>
-	<dt class="macro">����</dt>
+	<dt class="macro">無し</dt>
 </dl>
 
-<h2>���</h2>
+<h2>解説</h2>
 
 <p>
-<a href="inputbox.html">"inputbox"</a>, <a href="listbox.html">"listbox"</a>, <a href="messagebox.html">"messagebox"</a>, <a href="passwordbox.html">"passwordbox"</a>, <a href="statusbox.html">"statusbox"</a>, <a href="yesnobox.html">"yesnobox"</a> �R�}���h�ŕ\�������_�C�A���O�{�b�N�X�A�G���[�_�C�A���O�\���ʒu���ʒu��ύX����B<br>
-�܂��A�X�e�[�^�X�_�C�A���O�{�b�N�X���\������Ă���ꍇ�Asetdlgpos �R�}���h�͂��̃_�C�A���O�{�b�N�X���ړ�������B<br>
-�_�C�A���O���f�B�X�v���C����͂ݏo���ꍇ�́A�f�B�X�v���C���Ɉړ������B<em>(�o�[�W���� 4.105�ȍ~)</em><br>
-���W�̒P�ʂ̓s�N�Z���B<br>
+<a href="inputbox.html">"inputbox"</a>, <a href="listbox.html">"listbox"</a>, <a href="messagebox.html">"messagebox"</a>, <a href="passwordbox.html">"passwordbox"</a>, <a href="statusbox.html">"statusbox"</a>, <a href="yesnobox.html">"yesnobox"</a> コマンドで表示されるダイアログボックス、エラーダイアログ表示位置を位置を変更する。<br>
+また、ステータスダイアログボックスが表示されている場合、setdlgpos コマンドはそのダイアログボックスを移動させる。<br>
+ダイアログがディスプレイからはみ出す場合は、ディスプレイ内に移動される。<em>(バージョン 4.105以降)</em><br>
+座標の単位はピクセル。<br>
 </p>
 
 <ol>
-  <li>setdlgpos <em>(�o�[�W���� 4.105�ȍ~)</em><br>
-    �p�����[�^�ȗ����̕\���ʒu�́A���C���f�B�X�v���C(�v���C�}���f�B�X�v���C)�̃f�t�H���g�ʒu�ƂȂ�B
+  <li>setdlgpos <em>(バージョン 4.105以降)</em><br>
+    パラメータ省略時の表示位置は、メインディスプレイ(プライマリディスプレイ 以下略)の中央となる。
   </li>
   <li>setdlgpos &lt;x&gt; &lt;y&gt;<br>
-    &lt;x&gt; �� &lt;y&gt; �̓_�C�A���O�{�b�N�X������̍��W (x,y) ��\�킷�B<br>
-    ���_ (0,0) �̓��C���f�B�X�v���C������B
+    &lt;x&gt; と &lt;y&gt; でダイアログボックス左上隅の座標 (x,y) を指定する。<br>
+    原点 (0,0)はメインディスプレイ左上隅。
   </li>
 <font color="red">
-  <li>setdlgpos &lt;x&gt; &lt;y&gt; &lt;position&gt; <em>(�o�[�W���� 5.X �ȍ~)</em>
+  <li>setdlgpos &lt;x&gt; &lt;y&gt; &lt;position&gt; <em>(バージョン 5.X 以降)</em>
     <ul>
-      <li>&lt;position&gt; �� 1 ���� 5 �̏ꍇ<br>
-	MACRO �� Tera Term �ƃ����N����Ă���ꍇ�́AVT �E�C���h�E���\������Ă���f�B�X�v���C�Ƀ_�C�A���O�{�b�N�X���\�������B<br>
-	MACRO �� Tera Term �ƃ����N����Ă��Ȃ��ꍇ�́A���C���f�B�X�v���C�Ƀ_�C�A���O�{�b�N�X���\�������B<br>
-	�_�C�A���O�{�b�N�X�̕\���ʒu�́A&lt;position&gt; �Ŏw�肵���ꏊ�ƂȂ�B
+      <li>&lt;position&gt; が 1 から 5 の場合<br>
+	MACRO が Tera Term とリンクされている場合は、VT ウインドウが表示されているディスプレイにダイアログボックスが表示される。<br>
+	MACRO が Tera Term とリンクされていない場合は、メインディスプレイにダイアログボックスが表示される。<br>
+	ダイアログボックスの表示位置は、&lt;position&gt; で指定した場所となる。
       </li>
-      <li>&lt;position&gt; �� 6 ���� 10 �̏ꍇ<br>
-	MACRO �� Tera Term �ƃ����N����Ă���ꍇ�́AVT �E�C���h�E���\������Ă���f�B�X�v���C�Ƀ_�C�A���O�{�b�N�X���\�������B<br>
-	MACRO �� Tera Term �ƃ����N����Ă���ꍇ�̕\���ʒu�́A&lt;position&gt; �Ŏw�肵���ꏊ�ƂȂ�B<br>
-	MACRO �� Tera Term �ƃ����N����Ă��Ȃ��A�������́ATera Term ���ŏ�����Ԃ܂��͔�\����Ԃ̏ꍇ�́A���C���f�B�X�v���C�Ƀ_�C�A���O�{�b�N�X���\�������B<br>
-	���̏ꍇ�̕\���ʒu�� &lt;x&gt; &lt;y&gt; ���W�ƂȂ�B
+      <li>&lt;position&gt; が 6 から 10 の場合<br>
+	MACRO が Tera Term とリンクされている場合は、VT ウインドウが表示されているディスプレイにダイアログボックスが表示される。<br>
+	MACRO が Tera Term とリンクされている場合の表示位置は、&lt;position&gt; で指定した場所となる。<br>
+	MACRO が Tera Term とリンクされていない、もしくは、Tera Term が最小化状態または非表示状態の場合は、メインディスプレイにダイアログボックスが表示される。<br>
+	この場合の表示位置は &lt;x&gt; &lt;y&gt; 座標となる。
       </li>
     </ul>
   </li>
-  <li>setdlgpos &lt;x&gt; &lt;y&gt; &lt;position&gt; &lt;offset x&gt; &lt;offset y&gt; <em>(�o�[�W���� 5.X �ȍ~)</em><br>
-    �_�C�A���O�{�b�N�X�̕\���ʒu�́Asetdlgpos &lt;x&gt; &lt;y&gt; &lt;position&gt; �̕\���ʒu(x,y���W)�� &lt;offset x&gt; &lt;offset y&gt; �����Z�����ꏊ�ƂȂ�B<br>
-    ���̒l���w�肷��ꍇ�́A<a href="../appendixes/negative.html">���̐����萔�ɂ��Ă̒���</a>���Q�Ƃ̂��ƁB
+  <li>setdlgpos &lt;x&gt; &lt;y&gt; &lt;position&gt; &lt;offset x&gt; &lt;offset y&gt; <em>(バージョン 5.X 以降)</em><br>
+    ダイアログボックスの表示位置は、setdlgpos &lt;x&gt; &lt;y&gt; &lt;position&gt; の表示位置(x,y座標)に &lt;offset x&gt; &lt;offset y&gt; を加算した場所となる。<br>
+    負の値を指定する場合は、<a href="../appendixes/negative.html">負の整数定数についての注意</a>を参照のこと。
   </li>
 </font>
 </ol>
 
-<h2>��</h2>
+<h2>例</h2>
 
 <pre class="macro-example">
-; ����̋��Ƀ_�C�A���O�{�b�N�X
+; 左上の隅にダイアログボックス
 setdlgpos 0 0
 messagebox 'Message' 'Title'
 
-; �X�e�[�^�X�_�C�A���O�{�b�N�X���J��
+; ステータスダイアログボックスを開く
 setdlgpos 0 200
 statusbox 'Message' 'Title'
 
-; �X�e�[�^�X�_�C�A���O�{�b�N�X���ړ�
+; ステータスダイアログボックスを移動
 for i 0 200
   setdlgpos i 200
 next
@@ -153,7 +153,7 @@ messagebox 'setdlgpos 0 0 10' 'center of the VT window'
 
 </font>
 
-<h2>�Q��</h2>
+<h2>参照</h2>
 <ul>
   <li><a href="inputbox.html">inputbox</a></li>
   <li><a href="listbox.html">listbox</a></li>
@@ -162,7 +162,7 @@ messagebox 'setdlgpos 0 0 10' 'center of the VT window'
   <li><a href="statusbox.html">statusbox</a></li>
   <li><a href="yesnobox.html">yesnobox</a></li>
   <li><a href="getttpos.html">getttpos</a></li>
-  <li><a href="../appendixes/negative.html">���̐����萔�ɂ��Ă̒���</a></li>
+  <li><a href="../appendixes/negative.html">負の整数定数についての注意</a></li>
 </ul>
 
 </body>

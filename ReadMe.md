@@ -70,7 +70,7 @@
 
   - **[Issues, Pull requests, Commits](https://github.com/search?q=author%3Ahkanou+repo%3ATeraTermProject%2Fteraterm&type=issues&s=created&o=desc)**  
 
-  - **[AppVeyor](https://ci.appveyor.com/project/hkanou/teratermproject-teraterm/history**  
+  - **[AppVeyor](https://ci.appveyor.com/project/hkanou/teratermproject-teraterm/history)**  
 
 ## ビルド環境
 

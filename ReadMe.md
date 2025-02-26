@@ -66,6 +66,10 @@
     ![ttpmenu Image1](ttpmenu1/image/ttpmenu1.png)  
     ![ttpmenu Image2](ttpmenu1/image/ttpmenu2.png)
 
+# その他
+
+  - **[Issues, Pull requests, Commits](https://github.com/search?q=author%3Ahkanou+repo%3ATeraTermProject%2Fteraterm&type=issues&s=created&o=desc)**  
+
 ## ビルド環境
 
   Visual Studio Express 2017  
